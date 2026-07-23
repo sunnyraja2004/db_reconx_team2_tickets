@@ -15,15 +15,34 @@ import java.sql.Statement;
  * WHAT:    Custom actuator HealthIndicator that runs a fast `SELECT 1` with
  *          a 2-second timeout and reports latencyMs as a detail.
  * HOW:     Extends AbstractHealthIndicator; Spring picks it up by bean name
+<<<<<<< HEAD
  *          ("database") and exposes it under /actuator/health/database. Any
  *          exception thrown out of doHealthCheck is converted to DOWN by the
  *          superclass, with the exception class attached as a detail.
+=======
+ *          and exposes it under /actuator/health/database.
+>>>>>>> c2757038 (daywise-files)
  * WHY:     The default DataSource health indicator works, but a custom one
  *          gives us a controllable timeout AND visible latency for SRE
  *          dashboards.
  * OBSERVE: GET /api/actuator/health/database -> `{"status":"UP",
  *          "details":{"latencyMs": <number>}}`.
  * ============================================================================
+<<<<<<< HEAD
+=======
+ *
+ *  TODO(TICKET-ADV059):
+ *    long start = System.nanoTime();
+ *    try (Connection c = ds.getConnection(); Statement s = c.createStatement()) {
+ *        s.setQueryTimeout(2);
+ *        s.execute("SELECT 1");
+ *        builder.up().withDetail("latencyMs", (System.nanoTime() - start) / 1_000_000);
+ *    }
+ *
+ *  HINT: Throw any exception out of this method — AbstractHealthIndicator
+ *        converts it to DOWN with the exception class as a detail.
+ * ============================================================================
+>>>>>>> c2757038 (daywise-files)
  */
 @Component("database")
 public class DatabaseHealthIndicator extends AbstractHealthIndicator {

@@ -1,6 +1,7 @@
 # Day 4 — Solved Files & How To Run
 
 Day 4 is the persistence + web-plumbing day. You wired the JPA
+<<<<<<< HEAD
 `TradeSpecifications`, gave the app a proper Swagger doc, custom
 health indicators for the database and Kafka, structured logging
 with a per-request MDC correlation id, and RFC-7807 `ProblemDetail`
@@ -20,6 +21,11 @@ either:
   read the diff first, then copy the solved version over.
 
 Both flows land at the same result.
+=======
+`TradeSpecifications`, brought the `TradeService` CRUD to life,
+gave the app a proper Swagger doc, a real DB health indicator,
+and RFC-7807 `ProblemDetail` responses for every domain exception.
+>>>>>>> c2757038 (daywise-files)
 
 **In this file:**
 
@@ -44,9 +50,15 @@ cp -R day4-solved-files/backend/ backend/
 
 ## Scope
 
+<<<<<<< HEAD
 Day 4 has 15 tickets (ADV048–062). Seven files ship in this folder;
 the rest are pom-only dependencies (Envers, springdoc) or profile
 config that already ships in the starter.
+=======
+Day 4 has 15 tickets (ADV048–062). Only five files needed code
+changes — many tickets are pom-only dependencies (Envers, springdoc,
+opencsv) or profile config that already ships in the starter.
+>>>>>>> c2757038 (daywise-files)
 
 | Ticket | Status | Where |
 |---|---|---|
@@ -60,6 +72,7 @@ config that already ships in the starter.
 | ADV057 — Pageable / Page<T> | ✓ already wired | `TradeRepository`, `TradeController` |
 | ADV058 — Swagger OpenAPI bean + bearerAuth | ✓ in this folder | `OpenApiConfig.java` |
 | ADV059 — Custom `DatabaseHealthIndicator` | ✓ in this folder | `DatabaseHealthIndicator.java` |
+<<<<<<< HEAD
 | ADV060 — `KafkaHealthIndicator` (@ConditionalOnProperty) | ✓ in this folder | `KafkaHealthIndicator.java` |
 | ADV061 — Structured logging with MDC | ✓ in this folder | `MdcFilter.java`, `logback-spring.xml` |
 | ADV062 — RFC-7807 ProblemDetail | ✓ in this folder | `GlobalExceptionHandler.java` |
@@ -71,6 +84,12 @@ config that already ships in the starter.
 > REST tickets **ADV064–ADV067** — they are here so Day 4's Swagger UI
 > can exercise real endpoints and the Day 5 controllers have real
 > methods to call.
+=======
+| ADV060 — CSV export | ✓ already in starter | `TradeController.exportCsv` |
+| ADV061 — Multipart CSV import | ✓ already in starter | `TradeController.importCsv` |
+| ADV062 — RFC-7807 ProblemDetail | ✓ in this folder | `GlobalExceptionHandler.java` |
+| ADV064–067 — TradeService CRUD + softDelete | ✓ in this folder | `TradeService.java` |
+>>>>>>> c2757038 (daywise-files)
 
 ---
 
@@ -81,11 +100,16 @@ config that already ships in the starter.
 | 1 | `backend/…/repository/TradeSpecifications.java` | same path | ADV056 |
 | 2 | `backend/…/config/OpenApiConfig.java` | same path | ADV058 |
 | 3 | `backend/…/observability/DatabaseHealthIndicator.java` | same path | ADV059 |
+<<<<<<< HEAD
 | 4 | `backend/…/observability/KafkaHealthIndicator.java` | same path | ADV060 |
 | 5 | `backend/…/observability/MdcFilter.java` | same path | ADV061 |
 | 6 | `backend/src/main/resources/logback-spring.xml` | same path | ADV061 |
 | 7 | `backend/…/exception/GlobalExceptionHandler.java` | same path | ADV062 |
 | 8 | `backend/…/service/TradeService.java` | same path | ADV056/057 list + ADV064–067 CRUD (Day 5) |
+=======
+| 4 | `backend/…/exception/GlobalExceptionHandler.java` | same path | ADV062 |
+| 5 | `backend/…/service/TradeService.java` | same path | ADV064–067 |
+>>>>>>> c2757038 (daywise-files)
 
 ---
 
@@ -94,10 +118,15 @@ config that already ships in the starter.
 - **`TradeSpecifications.java`** — three `Specification<Trade>` factories (`hasStatus`, `tradeDateBetween`, `hasCounterparty`). Each returns `cb.conjunction()` when its filter is `null`, so callers can compose them freely without pre-checking for nulls.
 - **`OpenApiConfig.java`** — the `reconxOpenAPI()` `@Bean` sets title, version, description, contact, and registers a `bearerAuth` HTTP scheme so Swagger UI shows an "Authorize" button that accepts JWTs (green-lit for Day-5 security).
 - **`DatabaseHealthIndicator.java`** — implements `doHealthCheck()` with a 2-second-timeout `SELECT 1`, records `latencyMs` as a detail. Any thrown exception bubbles up and Spring converts it to `DOWN`.
+<<<<<<< HEAD
 - **`KafkaHealthIndicator.java`** — `@Component("reconxKafka")` gated by `@ConditionalOnProperty("spring.kafka.bootstrap-servers")` so it disappears under `dev`. Builds an `AdminClient` with 2s request + 3s API timeouts, calls `describeCluster()`, reports `clusterId` and `nodeCount`.
 - **`MdcFilter.java` + `logback-spring.xml`** — the `@Order(1)` filter puts `X-Correlation-Id` (falling back to a random UUID) and optional `X-Trade-Ref` into MDC, then `MDC.clear()` in a `finally` so ids don't leak onto the next request. The logback config has two `<springProfile>` blocks: a plain pattern with MDC tokens for `dev`, and `LogstashEncoder` JSON with `includeMdc=true` + a `service` custom field for `uat,prod`.
 - **`GlobalExceptionHandler.java`** — maps each domain exception to the right HTTP status: `TradeNotFound → 404`, `DuplicateTradeRef → 409`, `InvalidTrade → 400`, `ReconciliationMismatch → 422`, plus JSR-380 `MethodArgumentNotValidException` and `ConstraintViolationException` → 400 with a readable joined message.
 - **`TradeService.java`** — six methods: `create` (duplicate-check + build + save + metrics + event), `update`, `updateStatus`, `softDelete` (calls `t.softDelete()` which sets `deleted_at`), and `list` composing the three Specifications with `.where(...).and(...).and(...)`. The `list` method backs ADV056/057; the mutating methods are the service side of the Day 5 REST tickets ADV064–067.
+=======
+- **`GlobalExceptionHandler.java`** — maps each domain exception to the right HTTP status: `TradeNotFound → 404`, `DuplicateTradeRef → 409`, `InvalidTrade → 400`, `ReconciliationMismatch → 422`, plus JSR-380 `MethodArgumentNotValidException` and `ConstraintViolationException` → 400 with a readable joined message.
+- **`TradeService.java`** — six methods: `create` (duplicate-check + build + save + metrics + event), `update`, `updateStatus`, `softDelete` (calls `t.softDelete()` which sets `deleted_at`), and `list` composing the three Specifications with `.where(...).and(...).and(...)`.
+>>>>>>> c2757038 (daywise-files)
 
 ---
 
@@ -132,6 +161,7 @@ echo "exit=$?"     # want exit=0
 Watch for `Started ReconxApplication in ~4 seconds`. In a second terminal:
 
 ```bash
+<<<<<<< HEAD
 curl http://localhost:8080/api/actuator/health
 # → {"status":"UP","groups":["liveness","readiness"]}
 
@@ -149,6 +179,15 @@ curl -H "X-Correlation-Id: foo-123" \
 # → every log line for that request contains foo-123 in the pattern slot.
 
 open http://localhost:8080/api/swagger-ui.html
+=======
+curl http://localhost:8081/api/actuator/health
+# → {"status":"UP","groups":["liveness","readiness"]}
+
+curl http://localhost:8081/api/actuator/health/database
+# → {"status":"UP","details":{"latencyMs":<n>}}   ← ADV059 in action
+
+open http://localhost:8081/api/swagger-ui.html
+>>>>>>> c2757038 (daywise-files)
 # → Title reads "ReconX API", green "Authorize" button appears ← ADV058
 ```
 
@@ -165,8 +204,11 @@ Hit `Ctrl+C` when you're done.
 - `./mvnw clean compile` exits `0`.
 - Boot reaches `Started ReconxApplication`.
 - `/actuator/health` and `/actuator/health/database` both return `UP`.
+<<<<<<< HEAD
 - `/actuator/health` under `dev` has no `reconxKafka` component; under `uat` with Kafka up it appears as `UP`.
 - Dev log lines contain the `correlationId` MDC slot; sending `-H "X-Correlation-Id: my-id"` makes `my-id` appear instead of a generated UUID.
+=======
+>>>>>>> c2757038 (daywise-files)
 - Swagger UI at `/api/swagger-ui.html` shows the customised title + Authorize button.
 - A malformed POST returns a ProblemDetail JSON body with the field errors joined by `; `.
 
@@ -175,6 +217,7 @@ Hit `Ctrl+C` when you're done.
 ## If something goes wrong
 
 - **"Cannot find symbol: SecurityRequirement / OpenAPI"** → springdoc dependency missing. Confirm `springdoc-openapi-starter-webmvc-ui` is on the classpath (it is by default in this project).
+<<<<<<< HEAD
 - **"Cannot find symbol: AdminClient / AdminClientConfig"** → `spring-kafka` not on the classpath. It ships in the starter's `pom.xml`; if you stripped it out, add it back.
 - **"Cannot find symbol: LogstashEncoder"** → `net.logstash.logback:logstash-logback-encoder` missing. Add it to the pom; it is pinned in `dependencyManagement`.
 - **`reconxKafka` shows UP under `dev`** → `spring.kafka.bootstrap-servers` is being set somewhere it shouldn't be (env var, `application-dev.yml`). `@ConditionalOnProperty` only omits the bean when the property is truly absent.
@@ -183,5 +226,11 @@ Hit `Ctrl+C` when you're done.
 - **Boot fails on Hibernate schema validation for `audit_log`** → Day-1 fix missing. Overlay Day 1.
 - **`ConstraintViolationException` handler doesn't fire** → validation isn't being triggered on that endpoint. Add `@Valid` to the controller parameter.
 - **Port 8080 in use** → `lsof -i :8080` then `kill <PID>`.
+=======
+- **"Cannot find symbol: TradeEvent.EventType"** → Day 4 depends on Day 9's DTO. That DTO already ships in the starter; if you deleted it, run `cp -R day1-solved-files/backend/ backend/` to restore.
+- **Boot fails on Hibernate schema validation for `audit_log`** → Day-1 fix missing. Overlay Day 1.
+- **`ConstraintViolationException` handler doesn't fire** → validation isn't being triggered on that endpoint. Add `@Valid` to the controller parameter.
+- **Port 8081 in use** → `lsof -i :8081` then `kill <PID>`.
+>>>>>>> c2757038 (daywise-files)
 
 Good progress — you're over the persistence hump. Onward to security.

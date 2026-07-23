@@ -2,7 +2,10 @@ package com.dbtraining.reconx.kafka;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+<<<<<<< HEAD
 import org.springframework.kafka.annotation.KafkaListener;
+=======
+>>>>>>> c2757038 (daywise-files)
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,14 +22,29 @@ import org.springframework.stereotype.Component;
  * OBSERVE: Publish a string to `system-alerts` via Kafdrop -> a WARN line
  *          appears in the app log.
  * ============================================================================
+<<<<<<< HEAD
+=======
+ *
+ *  TODO(TICKET-ADV133):
+ *    @KafkaListener(topics = "system-alerts", groupId = "alert-service")
+ *    public void onAlert(String payload) {
+ *        log.warn("ALERT: {}", payload);
+ *    }
+ * ============================================================================
+>>>>>>> c2757038 (daywise-files)
  */
 @Component
 public class AlertConsumer {
 
     private static final Logger log = LoggerFactory.getLogger(AlertConsumer.class);
 
+<<<<<<< HEAD
     @KafkaListener(topics = "system-alerts", groupId = "alert-service")
     public void onAlert(String payload) {
         log.warn("ALERT: {}", payload);
+=======
+    public void onAlert(String payload) {
+        throw new UnsupportedOperationException("TICKET-ADV133");
+>>>>>>> c2757038 (daywise-files)
     }
 }

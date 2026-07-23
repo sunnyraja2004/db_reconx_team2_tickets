@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 // withErrorBoundary HOC: wraps a component in an error boundary.
+=======
+// TICKET-ADV113 — withErrorBoundary HOC: wraps a component in an error boundary.
+>>>>>>> c2757038 (daywise-files)
 import React from 'react';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { error: null };
+<<<<<<< HEAD
     this.handleReset = this.handleReset.bind(this);
   }
 
@@ -32,6 +37,25 @@ class ErrorBoundary extends React.Component {
         </div>
       );
     }
+=======
+  }
+
+  static getDerivedStateFromError(/* error */) {
+    // TODO(TICKET-ADV113): return new state so the next render shows the
+    //                     fallback UI (e.g. { error }).
+    return null;
+  }
+
+  componentDidCatch(error, info) {
+    // TODO(TICKET-ADV113): log the error (in prod we'd ship to Sentry / a
+    //                     browser-side logger). console.error is fine here.
+  }
+
+  render() {
+    // TODO(TICKET-ADV113): if this.state.error is set, render an
+    //                     accessible fallback with a "Try again" button that
+    //                     clears the error state. Otherwise render children.
+>>>>>>> c2757038 (daywise-files)
     return this.props.children;
   }
 }

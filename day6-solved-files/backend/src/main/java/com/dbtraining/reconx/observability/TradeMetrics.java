@@ -26,7 +26,15 @@ import org.springframework.stereotype.Component;
  * ReconciliationEngine.reconcile() (TICKET-ADV084) — not in this class.
  * ============================================================================
  *
+<<<<<<< HEAD
  *  NOTE: A polled Gauge MUST hold a strong reference to its source object,
+=======
+ *  TODO(TICKET-ADV083 + ADV086):
+ *    public void incrementTradeCreated() { tradeCreated.increment(); }
+ *    public void recordTradeValue(double value) { tradeValue.record(value); }
+ *
+ *  HINT: A polled Gauge MUST hold a strong reference to its source object,
+>>>>>>> c2757038 (daywise-files)
  *        otherwise it disappears on GC. Here breakRepo is captured by the
  *        Gauge.builder so the lifetime is tied to the registry.
  * ============================================================================

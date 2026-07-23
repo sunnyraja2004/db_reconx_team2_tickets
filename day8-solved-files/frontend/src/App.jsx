@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // TICKET-ADV122 — Lazy + Suspense for route-based code splitting.
 // TICKET-ADV124 — theme toggle wired to ThemeContext.
 import React, { Suspense, lazy } from 'react';
@@ -8,12 +9,23 @@ import { useTheme } from '@context/ThemeContext.jsx';
 
 // Each page import is wrapped in React.lazy() so Vite emits a separate
 // chunk per route. The <Suspense> fallback shows while the chunk downloads.
+=======
+// TICKET-ADV122 — Lazy + Suspense for route-based code splitting
+import React, { Suspense, lazy } from 'react';
+import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { withErrorBoundary } from '@components/withErrorBoundary.jsx';
+
+// TODO(TICKET-ADV122): wrap each page import in React.lazy() so Vite emits a
+// separate chunk per route. The <Suspense> fallback below shows while the
+// chunk downloads.
+>>>>>>> c2757038 (daywise-files)
 const Dashboard = lazy(() => import('@pages/Dashboard.jsx'));
 const Trades    = lazy(() => import('@pages/Trades.jsx'));
 const AddTrade  = lazy(() => import('@pages/AddTrade.jsx'));
 const Login     = lazy(() => import('@pages/Login.jsx'));
 
 function App() {
+<<<<<<< HEAD
   const { user, logout } = useAuth();
   const { theme, toggle } = useTheme();
   const navigate = useNavigate();
@@ -23,6 +35,8 @@ function App() {
     navigate('/login');
   }
 
+=======
+>>>>>>> c2757038 (daywise-files)
   return (
     <div className="layout">
       <header className="layout__header">
@@ -32,6 +46,7 @@ function App() {
           <Link to="/trades">Trades</Link>
           <Link to="/trades/new">Add trade</Link>
         </nav>
+<<<<<<< HEAD
         {/* TICKET-ADV124 — theme toggle */}
         <button
           type="button"
@@ -46,6 +61,8 @@ function App() {
             Sign out
           </button>
         )}
+=======
+>>>>>>> c2757038 (daywise-files)
       </header>
       <main className="layout__main">
         <Suspense fallback={<div className="loader">Loading…</div>}>

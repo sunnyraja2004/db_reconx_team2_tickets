@@ -69,6 +69,7 @@ public final class EquityTrade implements TradeType {
         return (o instanceof EquityTrade other) && tradeRef.equals(other.tradeRef);
     }
 
+<<<<<<< HEAD
     @Override public int hashCode() { return tradeRef.hashCode(); }
 
     @Override
@@ -85,6 +86,18 @@ public String toString() {
                     side
             );
 }
+=======
+    @Override public int hashCode() {
+        return tradeRef.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "EquityTrade[ref=%s, symbol=%s, qty=%s, price=%s %s, side=%s]"
+                .formatted(tradeRef, instrumentSymbol, quantity, price,
+                        currency.getCurrencyCode(), side);
+    }
+>>>>>>> c2757038 (daywise-files)
 
     /** Fluent builder. Required fields validated in {@link #build()}. */
     public static final class Builder {

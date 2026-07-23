@@ -11,6 +11,7 @@ TICKET-ADV100 — ARIA roles + aria-live for the trade feed
   <meta charset="utf-8" />
   <title>ReconX (static) — Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+<<<<<<< HEAD
   <!-- TICKET-ADV100 — read saved theme BEFORE the stylesheet paints to eliminate FOUC -->
   <script>
     (function () {
@@ -18,6 +19,8 @@ TICKET-ADV100 — ARIA roles + aria-live for the trade feed
       document.documentElement.dataset.theme = saved;
     })();
   </script>
+=======
+>>>>>>> c2757038 (daywise-files)
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -28,9 +31,13 @@ TICKET-ADV100 — ARIA roles + aria-live for the trade feed
       <a href="trades.html">Trades</a>
       <a href="recon.html">Recon</a>
     </nav>
+<<<<<<< HEAD
     <!-- TICKET-ADV104 — SSE connection status badge -->
     <span id="sse-status" class="sse-badge">Connecting…</span>
     <button id="theme-toggle" aria-label="Toggle light/dark theme">&#127767;</button>
+=======
+    <button id="theme-toggle" aria-label="Toggle light/dark theme">🌗</button>
+>>>>>>> c2757038 (daywise-files)
   </header>
 
   <aside class="layout__sidebar" role="complementary">
@@ -51,21 +58,32 @@ TICKET-ADV100 — ARIA roles + aria-live for the trade feed
         <article class="stat-card stat-card--warn"><h3>Open breaks</h3><p>15</p></article>
         <article class="stat-card"><h3>Notional</h3><p>$24.3M</p></article>
       </div>
+<<<<<<< HEAD
       <!-- TICKET-ADV102 — pulsing danger alert -->
       <div class="alert--danger" role="alert">
         &#9888; 15 open reconciliation breaks &mdash; investigate now
       </div>
+=======
+>>>>>>> c2757038 (daywise-files)
     </section>
 
     <section aria-labelledby="feed">
       <h2 id="feed">Live trade feed</h2>
+<<<<<<< HEAD
       <!-- TICKET-ADV100 — aria-live so screen readers announce new trades -->
+=======
+      <!-- TICKET-ADV100 aria-live so screen readers announce new trades -->
+>>>>>>> c2757038 (daywise-files)
       <div id="trade-feed" role="status" aria-live="polite" aria-atomic="false"></div>
     </section>
   </main>
 
   <footer class="layout__footer" role="contentinfo">
+<<<<<<< HEAD
     <small>ReconX TDI 2026 &middot; static dashboard (Day 7)</small>
+=======
+    <small>ReconX TDI 2026 · static dashboard (Day 7)</small>
+>>>>>>> c2757038 (daywise-files)
   </footer>
 
   <script src="js/theme.js"></script>

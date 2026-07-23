@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Day 8 — Solved Files Guide
 ### Topic: React SPA — Hooks, HOCs, Context, Forms, Tests (ADV111–ADV125)
 
@@ -195,11 +196,65 @@ npm install
 
 > `npm install` is only needed once (or after `package.json` changes).
 > If `node_modules` is already there and nothing changed, skip it.
+=======
+# Day 8 — Solved Files & How To Run
+
+Day 8 is the second frontend day — a Vite + React SPA replacing the
+Day-7 static dashboard. Zero backend Java changes; all your work is in
+the `frontend/` folder.
+
+**What this folder ships** (a snapshot of the current `frontend/` tree,
+excluding `node_modules/` and `dist/`):
+
+- `frontend/index.html`, `vite.config.js`, `package.json`, `Dockerfile`, `nginx.conf`, `eslint.config.js`, `.dockerignore`
+- `frontend/src/main.jsx`, `App.jsx`, `test-setup.js`, `styles/global.css`
+- `frontend/src/context/` — `AuthContext.jsx`, `ThemeContext.jsx` (ADV124)
+- `frontend/src/components/` — `DataTable.jsx` (ADV114), `withAuth.jsx` (ADV112), `withErrorBoundary.jsx` (ADV113), plus `__tests__/DataTable.test.jsx` (ADV125)
+- `frontend/src/hooks/` — `useWebSocket.js` (ADV115), `useTradeStream.js` (ADV116), `useDebouncedSearch.js` (ADV117), `useInfiniteScroll.js` (ADV118)
+- `frontend/src/pages/` — `Dashboard.jsx`, `Login.jsx`, `Trades.jsx`, `AddTrade.jsx` (ADV123 lives on AddTrade)
+- `frontend/src/services/apiService.js`
+
+## Quick start
+
+```bash
+# From the project root — one-shot overlay:
+cp -R day8-solved-files/frontend/ frontend/
+cd frontend && npm install    # first time only (node_modules is not in this folder)
+```
+
+---
+
+## What Day 8 covers
+
+Fifteen tickets (ADV111–125), all in `frontend/`:
+
+| Ticket | Topic |
+|---|---|
+| ADV111 | Vite setup with path aliases |
+| ADV112 | `withAuth(Component)` HOC |
+| ADV113 | `withErrorBoundary(Component)` HOC |
+| ADV114 | `<DataTable>` compound component |
+| ADV115 | `useWebSocket(url, options)` hook |
+| ADV116 | `useTradeStream()` hook (SSE) |
+| ADV117 | `useDebouncedSearch(query, delay)` |
+| ADV118 | `useInfiniteScroll(loadMore)` |
+| ADV119 | `React.memo` on `<TradeRow />` |
+| ADV120 | `useMemo` for portfolio value + P&L |
+| ADV121 | `useCallback` on handlers passed to memoised children |
+| ADV122 | `React.lazy` + `Suspense` route-based code splitting |
+| ADV123 | Trade entry form (React Hook Form + Yup) |
+| ADV124 | Theme context (light/dark) |
+| ADV125 | React Testing Library tests for dashboard summary cards |
+
+Nothing to overlay from this folder — you edit files under `frontend/`
+directly.
+>>>>>>> c2757038 (daywise-files)
 
 ---
 
 ## Run the project
 
+<<<<<<< HEAD
 You need **two terminals** — one for the backend, one for Vite.
 
 ### Terminal 1 — backend (Mac / Linux)
@@ -290,12 +345,46 @@ Instead of a blank white page you see the error fallback with a
 **Try again** button. Click it and the app recovers.
 
 ### Run the RTL tests
+=======
+Two terminals: backend + Vite dev server.
+
+### Before you start
+
+1. **Java 21** on the terminal that runs the backend: `export JAVA_HOME=$(/usr/libexec/java_home -v 21)`.
+2. **Days 1–6 are applied** (backend must be at post-Day-6 state so JWT auth + SSE stream + REST endpoints all work):
+   ```bash
+   for d in day1 day2 day3 day4 day5 day6; do cp -R ${d}-solved-files/backend/ backend/; done
+   ```
+3. **Node 20+** available for Vite. `node --version`.
+
+### Terminal 1 — backend
+
+```bash
+cd backend
+./mvnw spring-boot:run       # port 8081, context path /api
+```
+
+### Terminal 2 — frontend
+
+```bash
+cd frontend
+npm install                  # first time only
+npm run dev                  # Vite serves on http://localhost:5173
+```
+
+Open <http://localhost:5173>, log in with a seeded user, and click
+around. As you complete each ticket the corresponding page /
+component / hook light up.
+
+### Running the RTL tests (ADV125)
+>>>>>>> c2757038 (daywise-files)
 
 ```bash
 cd frontend
 npm test
 ```
 
+<<<<<<< HEAD
 Expected output:
 
 ```
@@ -328,11 +417,26 @@ Tests       2 passed (2)
 | ADV123 | react-hook-form + Yup | No validation; form always submits | 8-field schema; per-field errors on blur |
 | ADV124 | `ThemeContext` | `toggle()` is a no-op | Dark/light toggle + `data-theme` + localStorage |
 | ADV125 | RTL tests | TODOs in test file — 0 assertions | 2 passing tests with real assertions |
+=======
+---
+
+## What success looks like
+
+- `npm run dev` boots without errors; the login page renders.
+- A protected route redirects to `/login` when hit without a JWT (that's `withAuth` doing its job).
+- Throwing inside a wrapped child renders your error-boundary fallback instead of blanking the page (`withErrorBoundary`).
+- Typing quickly into the trade-search input fires one network request after you stop, not one per keystroke (`useDebouncedSearch`).
+- Scrolling to the bottom of a paginated list auto-loads the next page (`useInfiniteScroll`).
+- Toggling an unrelated piece of state does NOT re-render `<TradeRow />` in the React DevTools Profiler (`React.memo` + `useCallback`).
+- `/`, `/trades`, `/trades/new`, `/login` each pull a distinct JS bundle in the Network tab (`React.lazy`).
+- `npm test` prints all RTL tests green.
+>>>>>>> c2757038 (daywise-files)
 
 ---
 
 ## Troubleshooting
 
+<<<<<<< HEAD
 | Problem | Fix |
 |---------|-----|
 | `npm run dev` shows module not found `@hooks/...` | Path aliases are in `vite.config.js`. Run `cp -R day8-solved-files/frontend/vite.config.js frontend/` and restart Vite |
@@ -346,3 +450,13 @@ Tests       2 passed (2)
 | Port 8081 in use (Mac/Linux) | `lsof -i :8081` then `kill <PID>` |
 | Port 8081 in use (Windows) | `netstat -ano \| findstr :8081` then `taskkill /PID <PID> /F` |
 | Theme resets to light on reload | `localStorage` is being cleared. Check browser settings (private/incognito mode) |
+=======
+- **CORS errors on `fetch`** — Vite dev server needs to proxy `/api/**` to `http://localhost:8081`. Add a `server.proxy` block in `vite.config.ts`.
+- **SSE / WebSocket disconnects immediately** — your bearer token isn't being sent. `EventSource` doesn't support custom headers; pass the token as a query-param and have the backend accept either form.
+- **`useEffect` fires twice in dev** — that's React 18 StrictMode intentionally double-invoking effects. Add a cleanup function so your effect is idempotent.
+- **`useMemo` for portfolio value never recomputes** — you're missing a dependency in the deps array. Add every value the calc reads.
+- **`React.lazy` throws "invalid element type"** — the imported chunk isn't a default export. `React.lazy(() => import('./X'))` needs `X` to `export default …`.
+- **Port 5173 in use** — Vite picks the next free port automatically; check its startup output.
+
+Second frontend day. Keep DevTools + React DevTools + Profiler open.
+>>>>>>> c2757038 (daywise-files)

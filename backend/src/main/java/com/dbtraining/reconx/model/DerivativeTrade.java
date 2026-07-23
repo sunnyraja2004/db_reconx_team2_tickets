@@ -38,7 +38,15 @@ public final class DerivativeTrade implements TradeType {
     @Override public TradeRef tradeRef()     { return tradeRef; }
     @Override public LocalDate tradeDate()   { return tradeDate; }
     @Override public AssetClass assetClass() { return AssetClass.DERIVATIVE; }
+<<<<<<< HEAD
     @Override public Money notional()        { return new Money(strike.multiply(quantity), currency); }
+=======
+
+    /** Simplified notional = strike * quantity in the trade currency. */
+    @Override public Money notional() {
+        return new Money(strike.multiply(quantity), currency);
+    }
+>>>>>>> c2757038 (daywise-files)
 
     public String underlying()       { return underlying; }
     public BigDecimal strike()       { return strike; }
@@ -51,9 +59,16 @@ public final class DerivativeTrade implements TradeType {
 
     @Override public boolean equals(Object o) {
         return (o instanceof DerivativeTrade other) && tradeRef.equals(other.tradeRef);
+<<<<<<< HEAD
+=======
+    }
+    @Override public int hashCode() {
+        return tradeRef.hashCode();
+>>>>>>> c2757038 (daywise-files)
     }
     @Override public int hashCode() { return tradeRef.hashCode(); }
 
+<<<<<<< HEAD
     @Override
 public String toString() {
     // NOTE: counterpartyId omitted intentionally to prevent PII leakage.
@@ -70,6 +85,13 @@ public String toString() {
                     side
             );
 }
+=======
+    @Override public String toString() {
+        return "DerivativeTrade[ref=%s, %s %s on %s, strike=%s %s, qty=%s, expiry=%s, side=%s]"
+                .formatted(tradeRef, optionType, underlying, tradeDate, strike,
+                        currency.getCurrencyCode(), quantity, expiry, side);
+    }
+>>>>>>> c2757038 (daywise-files)
 
     public static final class Builder {
         private TradeRef tradeRef;

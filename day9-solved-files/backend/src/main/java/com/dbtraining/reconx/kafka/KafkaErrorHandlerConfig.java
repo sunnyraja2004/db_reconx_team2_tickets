@@ -1,5 +1,6 @@
 package com.dbtraining.reconx.kafka;
 
+<<<<<<< HEAD
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +9,9 @@ import org.springframework.kafka.core.KafkaOperations;
 import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.util.backoff.ExponentialBackOff;
+=======
+import org.springframework.context.annotation.Configuration;
+>>>>>>> c2757038 (daywise-files)
 
 /**
  * ============================================================================
@@ -27,14 +31,33 @@ import org.springframework.util.backoff.ExponentialBackOff;
  * OBSERVE: Force an exception in a consumer — Kafdrop should show the
  *          record on `trade-events-dlq` with the same partition as the
  *          original.
+<<<<<<< HEAD
  *
  * GOTCHA:  trade-events-dlq must already exist (TICKET-ADV128). The
+=======
+ * ============================================================================
+ *
+ *  TODO(TICKET-ADV134 + ADV135):
+ *    @Bean
+ *    public DefaultErrorHandler errorHandler(KafkaTemplate<Object,Object> template) {
+ *        DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
+ *            template,
+ *            (ConsumerRecord<?,?> rec, Exception ex) ->
+ *                new TopicPartition(rec.topic() + "-dlq", rec.partition()));
+ *        ExponentialBackOff backoff = new ExponentialBackOff(1000L, 2.0);
+ *        backoff.setMaxAttempts(3);
+ *        return new DefaultErrorHandler(recoverer, backoff);
+ *    }
+ *
+ *  GOTCHA: trade-events-dlq must already exist (TICKET-ADV128). The
+>>>>>>> c2757038 (daywise-files)
  *          recoverer does NOT auto-create the topic.
  * ============================================================================
  */
 @Configuration
 public class KafkaErrorHandlerConfig {
 
+<<<<<<< HEAD
     @Bean
     public DefaultErrorHandler errorHandler(KafkaOperations<Object, Object> template) {
         DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
@@ -47,4 +70,7 @@ public class KafkaErrorHandlerConfig {
 
         return new DefaultErrorHandler(recoverer, backoff);
     }
+=======
+    // TODO(TICKET-ADV134 + ADV135): define the errorHandler @Bean — see comments above.
+>>>>>>> c2757038 (daywise-files)
 }

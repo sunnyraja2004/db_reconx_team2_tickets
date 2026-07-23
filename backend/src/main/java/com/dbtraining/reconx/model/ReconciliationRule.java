@@ -41,6 +41,7 @@ public enum ReconciliationRule {
      *         are within tolerance.
      */
     public boolean matches(BigDecimal internalPrice, BigDecimal internalQty,
+<<<<<<< HEAD
                        BigDecimal externalPrice, BigDecimal externalQty) {
 
     BigDecimal priceDiff =
@@ -66,4 +67,17 @@ public enum ReconciliationRule {
 
     return priceOk && qtyOk;
 }
+=======
+                           BigDecimal externalPrice, BigDecimal externalQty) {
+        BigDecimal priceDiff = internalPrice.subtract(externalPrice).abs();
+        BigDecimal priceDiffPct = internalPrice.signum() == 0
+                ? BigDecimal.ZERO
+                : priceDiff.divide(internalPrice, 6, java.math.RoundingMode.HALF_UP);
+        BigDecimal qtyDiff = internalQty.subtract(externalQty).abs();
+
+        boolean priceOk = priceDiffPct.compareTo(priceTolerancePct) <= 0;
+        boolean qtyOk   = qtyDiff.compareTo(qtyToleranceAbs) <= 0;
+        return priceOk && qtyOk;
+    }
+>>>>>>> c2757038 (daywise-files)
 }

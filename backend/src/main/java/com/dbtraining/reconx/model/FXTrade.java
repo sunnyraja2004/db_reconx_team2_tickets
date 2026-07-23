@@ -49,8 +49,13 @@ public final class FXTrade implements TradeType {
 
     /** Notional in ccy2 = notionalCcy1 * fxRate. */
     @Override public Money notional() {
+<<<<<<< HEAD
     return new Money(notionalCcy1.multiply(fxRate), ccy2);
 }
+=======
+        return new Money(notionalCcy1.multiply(fxRate), ccy2);
+    }
+>>>>>>> c2757038 (daywise-files)
 
     public Currency ccy1()           { return ccy1; }
     public Currency ccy2()           { return ccy2; }
@@ -61,9 +66,16 @@ public final class FXTrade implements TradeType {
 
     @Override public boolean equals(Object o) {
         return (o instanceof FXTrade other) && tradeRef.equals(other.tradeRef);
+<<<<<<< HEAD
+=======
+    }
+    @Override public int hashCode() {
+        return tradeRef.hashCode();
+>>>>>>> c2757038 (daywise-files)
     }
     @Override public int hashCode() { return tradeRef.hashCode(); }
 
+<<<<<<< HEAD
     @Override
 public String toString() {
     // NOTE: counterpartyId and settlement-side information are intentionally
@@ -79,6 +91,13 @@ public String toString() {
                     side
             );
 }
+=======
+    @Override public String toString() {
+        return "FXTrade[ref=%s, %s/%s, notional=%s %s, rate=%s, side=%s]"
+                .formatted(tradeRef, ccy1.getCurrencyCode(), ccy2.getCurrencyCode(),
+                        notionalCcy1, ccy1.getCurrencyCode(), fxRate, side);
+    }
+>>>>>>> c2757038 (daywise-files)
 
     public static final class Builder {
         private TradeRef tradeRef;
@@ -98,6 +117,7 @@ public String toString() {
         public Builder counterpartyId(long v)      { this.counterpartyId = v; return this; }
 
         public FXTrade build() {
+<<<<<<< HEAD
 
     Objects.requireNonNull(tradeRef, "tradeRef");
     Objects.requireNonNull(ccy1, "ccy1");
@@ -121,5 +141,18 @@ public String toString() {
 
     return new FXTrade(this);
 }
+=======
+            Objects.requireNonNull(tradeRef,     "tradeRef");
+            Objects.requireNonNull(ccy1,         "ccy1");
+            Objects.requireNonNull(ccy2,         "ccy2");
+            Objects.requireNonNull(notionalCcy1, "notionalCcy1");
+            Objects.requireNonNull(fxRate,       "fxRate");
+            Objects.requireNonNull(side,         "side");
+            Objects.requireNonNull(tradeDate,    "tradeDate");
+            if (ccy1.equals(ccy2)) throw new IllegalStateException("ccy1 and ccy2 must differ");
+            if (fxRate.signum() <= 0) throw new IllegalStateException("fxRate must be > 0");
+            return new FXTrade(this);
+        }
+>>>>>>> c2757038 (daywise-files)
     }
 }

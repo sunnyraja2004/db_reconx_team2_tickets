@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Login page exchanging email/password for a JWT.
+=======
+// TICKET-ADV072 — Login page exchanging email/password for a JWT.
+>>>>>>> c2757038 (daywise-files)
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@context/AuthContext.jsx';
@@ -13,6 +17,7 @@ export default function Login() {
 
   async function submit(e) {
     e.preventDefault();
+<<<<<<< HEAD
     setError(null);
     try {
       const { token, role } = await api.login(email, password);
@@ -21,6 +26,13 @@ export default function Login() {
     } catch (err) {
       setError(err.message || 'Login failed');
     }
+=======
+    // TODO(TICKET-ADV072):
+    //   1. call api.login(email, password) — it returns { token, role }.
+    //   2. on success: call login(token, role) from AuthContext, then
+    //      navigate('/').
+    //   3. on failure: setError(err.message) so the alert div renders.
+>>>>>>> c2757038 (daywise-files)
   }
 
   return (
