@@ -44,7 +44,8 @@ public final class DerivativeTrade implements TradeType {
 
     /** Simplified notional = strike * quantity in the trade currency. */
     @Override public Money notional() {
-        return new Money(strike.multiply(quantity), currency);
+        // TODO(TICKET-ADV022): return new Money(strike * quantity, currency).
+        throw new UnsupportedOperationException("TICKET-ADV022");
     }
 >>>>>>> c2757038 (daywise-files)
 
@@ -58,6 +59,7 @@ public final class DerivativeTrade implements TradeType {
     public long counterpartyId()     { return counterpartyId; }
 
     @Override public boolean equals(Object o) {
+<<<<<<< HEAD
         return (o instanceof DerivativeTrade other) && tradeRef.equals(other.tradeRef);
 <<<<<<< HEAD
 =======
@@ -65,6 +67,14 @@ public final class DerivativeTrade implements TradeType {
     @Override public int hashCode() {
         return tradeRef.hashCode();
 >>>>>>> c2757038 (daywise-files)
+=======
+        // TODO(TICKET-ADV028): pattern-match on DerivativeTrade and compare tradeRef.
+        throw new UnsupportedOperationException("TICKET-ADV028");
+    }
+    @Override public int hashCode() {
+        // TODO(TICKET-ADV028): hash from tradeRef.
+        throw new UnsupportedOperationException("TICKET-ADV028");
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     }
     @Override public int hashCode() { return tradeRef.hashCode(); }
 
@@ -87,9 +97,8 @@ public String toString() {
 }
 =======
     @Override public String toString() {
-        return "DerivativeTrade[ref=%s, %s %s on %s, strike=%s %s, qty=%s, expiry=%s, side=%s]"
-                .formatted(tradeRef, optionType, underlying, tradeDate, strike,
-                        currency.getCurrencyCode(), quantity, expiry, side);
+        // TODO(TICKET-ADV030): "DerivativeTrade[ref=..., TYPE UNDERLYING on date, strike=... CCY, qty=..., expiry=..., side=...]"
+        throw new UnsupportedOperationException("TICKET-ADV030");
     }
 >>>>>>> c2757038 (daywise-files)
 
@@ -115,20 +124,12 @@ public String toString() {
         public Builder counterpartyId(long v)      { this.counterpartyId = v; return this; }
 
         public DerivativeTrade build() {
-            Objects.requireNonNull(tradeRef,   "tradeRef");
-            Objects.requireNonNull(underlying, "underlying");
-            Objects.requireNonNull(strike,     "strike");
-            Objects.requireNonNull(quantity,   "quantity");
-            Objects.requireNonNull(expiry,     "expiry");
-            Objects.requireNonNull(optionType, "optionType");
-            Objects.requireNonNull(currency,   "currency");
-            Objects.requireNonNull(side,       "side");
-            Objects.requireNonNull(tradeDate,  "tradeDate");
-            if (strike.signum() <= 0)   throw new IllegalStateException("strike must be > 0");
-            if (quantity.signum() <= 0) throw new IllegalStateException("quantity must be > 0");
-            if (expiry.isBefore(tradeDate))
-                throw new IllegalStateException("expiry cannot be before tradeDate");
-            return new DerivativeTrade(this);
+            // TODO(TICKET-ADV022):
+            //   - Objects.requireNonNull each required field.
+            //   - strike and quantity must be > 0.
+            //   - expiry must not be before tradeDate.
+            //   - return new DerivativeTrade(this).
+            throw new UnsupportedOperationException("TICKET-ADV022");
         }
     }
 }

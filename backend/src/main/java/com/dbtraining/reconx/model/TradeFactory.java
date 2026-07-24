@@ -26,7 +26,15 @@ public final class TradeFactory {
 
     private TradeFactory() { }
 
+    /**
+     * TODO(TICKET-ADV023):
+     *   1. Parse assetClass string into TradeType.AssetClass enum (toUpperCase first).
+     *   2. switch on the enum and dispatch to the matching equity/fx/bond/derivative
+     *      helper below.
+     *   3. The switch must be exhaustive — every TradeType.AssetClass case handled.
+     */
     public static TradeType create(String assetClass, Map<String, Object> p) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     TradeType.AssetClass ac =
@@ -47,10 +55,19 @@ public final class TradeFactory {
             case BOND       -> bond(p);
             case DERIVATIVE -> derivative(p);
         };
+=======
+        throw new UnsupportedOperationException("TICKET-ADV023");
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     }
 >>>>>>> c2757038 (daywise-files)
 
+    /**
+     * TODO(TICKET-ADV023):
+     *   Build an EquityTrade from the map. Expected keys: tradeRef, symbol,
+     *   quantity, price, currency, side, tradeDate, counterpartyId.
+     */
     private static EquityTrade equity(Map<String, Object> p) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     return EquityTrade.builder()
@@ -75,10 +92,19 @@ public final class TradeFactory {
                 .tradeDate(LocalDate.parse((String) p.get("tradeDate")))
                 .counterpartyId(((Number) p.get("counterpartyId")).longValue())
                 .build();
+=======
+        throw new UnsupportedOperationException("TICKET-ADV023");
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     }
 >>>>>>> c2757038 (daywise-files)
 
+    /**
+     * TODO(TICKET-ADV023):
+     *   Build an FXTrade from the map. Expected keys: tradeRef, ccy1, ccy2,
+     *   notionalCcy1, fxRate, side, tradeDate, counterpartyId.
+     */
     private static FXTrade fx(Map<String, Object> p) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     return FXTrade.builder()
@@ -103,10 +129,20 @@ public final class TradeFactory {
                 .tradeDate(LocalDate.parse((String) p.get("tradeDate")))
                 .counterpartyId(((Number) p.get("counterpartyId")).longValue())
                 .build();
+=======
+        throw new UnsupportedOperationException("TICKET-ADV023");
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     }
 >>>>>>> c2757038 (daywise-files)
 
+    /**
+     * TODO(TICKET-ADV023):
+     *   Build a BondTrade from the map. Expected keys: tradeRef, isin,
+     *   faceValue, couponRate, maturityDate, currency, side, tradeDate,
+     *   counterpartyId.
+     */
     private static BondTrade bond(Map<String, Object> p) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     return BondTrade.builder()
@@ -133,10 +169,20 @@ public final class TradeFactory {
                 .tradeDate(LocalDate.parse((String) p.get("tradeDate")))
                 .counterpartyId(((Number) p.get("counterpartyId")).longValue())
                 .build();
+=======
+        throw new UnsupportedOperationException("TICKET-ADV023");
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     }
 >>>>>>> c2757038 (daywise-files)
 
+    /**
+     * TODO(TICKET-ADV023):
+     *   Build a DerivativeTrade from the map. Expected keys: tradeRef,
+     *   underlying, strike, quantity, expiry, optionType, currency, side,
+     *   tradeDate, counterpartyId.
+     */
     private static DerivativeTrade derivative(Map<String, Object> p) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     return DerivativeTrade.builder()
@@ -169,6 +215,9 @@ public final class TradeFactory {
                 .tradeDate(LocalDate.parse((String) p.get("tradeDate")))
                 .counterpartyId(((Number) p.get("counterpartyId")).longValue())
                 .build();
+=======
+        throw new UnsupportedOperationException("TICKET-ADV023");
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     }
 >>>>>>> c2757038 (daywise-files)
 }

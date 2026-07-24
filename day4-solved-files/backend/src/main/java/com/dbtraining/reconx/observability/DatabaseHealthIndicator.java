@@ -16,18 +16,25 @@ import java.sql.Statement;
  *          a 2-second timeout and reports latencyMs as a detail.
  * HOW:     Extends AbstractHealthIndicator; Spring picks it up by bean name
 <<<<<<< HEAD
+<<<<<<< HEAD
  *          ("database") and exposes it under /actuator/health/database. Any
  *          exception thrown out of doHealthCheck is converted to DOWN by the
  *          superclass, with the exception class attached as a detail.
 =======
  *          and exposes it under /actuator/health/database.
 >>>>>>> c2757038 (daywise-files)
+=======
+ *          ("database") and exposes it under /actuator/health/database. Any
+ *          exception thrown out of doHealthCheck is converted to DOWN by the
+ *          superclass, with the exception class attached as a detail.
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
  * WHY:     The default DataSource health indicator works, but a custom one
  *          gives us a controllable timeout AND visible latency for SRE
  *          dashboards.
  * OBSERVE: GET /api/actuator/health/database -> `{"status":"UP",
  *          "details":{"latencyMs": <number>}}`.
  * ============================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
  *
@@ -43,6 +50,8 @@ import java.sql.Statement;
  *        converts it to DOWN with the exception class as a detail.
  * ============================================================================
 >>>>>>> c2757038 (daywise-files)
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
  */
 @Component("database")
 public class DatabaseHealthIndicator extends AbstractHealthIndicator {

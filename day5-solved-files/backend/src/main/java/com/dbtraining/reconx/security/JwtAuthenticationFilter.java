@@ -31,6 +31,7 @@ import java.util.List;
  * OBSERVE: A request with a valid token populates SecurityContextHolder; the
  *          downstream controller can use @AuthenticationPrincipal etc.
 <<<<<<< HEAD
+<<<<<<< HEAD
  *
  * NOTE:    Always call chain.doFilter at the end — even on auth failure — so
  *          Spring's normal exception flow can produce a clean 401.
@@ -58,6 +59,11 @@ import java.util.List;
  *  HINT: Always call chain.doFilter at the end — even on auth failure — so
  *        Spring's normal exception flow can produce a clean 401.
 >>>>>>> c2757038 (daywise-files)
+=======
+ *
+ * NOTE:    Always call chain.doFilter at the end — even on auth failure — so
+ *          Spring's normal exception flow can produce a clean 401.
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
  * ============================================================================
  */
 @Component

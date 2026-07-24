@@ -15,15 +15,21 @@ import java.time.LocalDate;
  * HOW:     Each method returns a lambda `(root, query, cb) -> Predicate`.
  *          A null filter argument means "no constraint", which is encoded
 <<<<<<< HEAD
+<<<<<<< HEAD
  *          via cb.conjunction() so callers can compose freely without
  *          pre-checking for nulls.
 =======
  *          via cb.conjunction().
 >>>>>>> c2757038 (daywise-files)
+=======
+ *          via cb.conjunction() so callers can compose freely without
+ *          pre-checking for nulls.
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
  * WHY:     Avoids exploding the repository with `findByXAndYAndZ...`
  *          methods for every possible combination of filters.
  * OBSERVE: GET /api/v1/trades?status=NEW&from=2026-01-01 should produce the
  *          right SQL WHERE clause — turn on `spring.jpa.show-sql` to verify.
+<<<<<<< HEAD
 <<<<<<< HEAD
  *
  * NOTE:    A nested field path (`root.get("counterparty").get("id")`) will
@@ -56,6 +62,11 @@ import java.time.LocalDate;
  *  HINT: A `null` field path (`root.get("counterparty").get("id")`) will
  *        force a JOIN — fine for an `equal` but be careful with `like`.
 >>>>>>> c2757038 (daywise-files)
+=======
+ *
+ * NOTE:    A nested field path (`root.get("counterparty").get("id")`) will
+ *          force a JOIN — fine for an `equal` but be careful with `like`.
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
  * ============================================================================
  */
 public final class TradeSpecifications {

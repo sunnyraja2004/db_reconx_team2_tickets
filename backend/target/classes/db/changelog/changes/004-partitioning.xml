@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
  ============================================================================
- TICKET-ADV007 — Monthly partitioning of trades on Postgres
+ TICKET-ADV007 + TICKET-ADV014 — Monthly partitioning of trades on Postgres
+
  WHAT:    Convert trades into a range-partitioned parent on trade_date and
+<<<<<<< HEAD
+<<<<<<< HEAD
+          create partitions for the current rolling 12 months.
+
+ HOW:     Postgres-only via raw SQL.
+
+ WHY:     PostgreSQL partitioning improves query performance for large trade
+          tables.
+
+ ADV014:
+          This changeset is protected with a PostgreSQL database precondition.
+          Non-Postgres environments skip safely and record the changeset as
+          MARK_RAN.
+
+ OBSERVE: Running Liquibase multiple times does not fail.
+=======
           create partitions for the rolling 12 months (current month - 11 .. current).
  HOW:     Postgres-only via raw SQL. In this clean starter trades is empty at
           this point, so we DROP + recreate as partitioned rather than the
@@ -23,51 +41,80 @@
  OBSERVE: On Postgres, `\d+ trades` shows "Partitioned table" + 12 children
           named trades_YYYY_MM. On H2, all three changesets MARK_RAN and the
           non-partitioned trades from 002 stays in place.
+>>>>>>> c2757038 (daywise-files)
+=======
+          create partitions for the current rolling 12 months.
+ HOW:     Postgres-only via raw SQL. The trainer guide for Day 1 documents
+          the "rename, recreate as partitioned, copy data" pattern that
+          students must run if production data already exists. In this clean
+          starter we recreate trades directly since there's nothing to copy.
+ WHY:     500-million-row trades table would kill EXPLAIN; monthly partitions
+          give predictable prune-by-date plans.
+ OBSERVE: \d+ trades shows "Partitioned table" + 12 child partitions.
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
  ============================================================================
 -->
+
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+    <!--
+        Demonstration only:
+        The partitioning conversion is destructive and taught separately.
+        Starter version ships a no-op so dev/uat boot cleanly.
+    -->
+
+    <changeSet id="004-partition-current-month" author="trainer">
+
+        <!--
+            Postgres-only changeset.
+            H2 and other databases skip this migration safely.
+            MARK_RAN records it as completed when the condition fails.
+        -->
+        <preConditions onFail="MARK_RAN">
+            <dbms type="postgresql"/>
+        </preConditions>
+
+
+        <comment>
+            Placeholder: students rebuild this in ADV007.
+            Trainer copy ships a no-op so dev/uat boot cleanly.
+        </comment>
+
+
+        <sql>
+            SELECT 1;
+        </sql>
+
+
+        <rollback>
+            <sql>
+                SELECT 1;
+=======
     <!-- Step 1: drop the non-partitioned trades created in 002 (CASCADE removes
          the settlements FK). Safe because seed data does not populate trades. -->
     <changeSet id="004-trades-drop-nonpartitioned" author="student">
+=======
+    <!-- Demonstration only: the partitioning conversion is destructive and is
+         taught in the trainer guide Day-1 Sprint 0B. In this starter we
+         create a single partition for the rolling-current-month so the
+         seed data has somewhere to land. -->
+    <changeSet id="004-partition-current-month" author="trainer">
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
         <preConditions onFail="MARK_RAN">
             <dbms type="postgresql"/>
         </preConditions>
-        <sql>DROP TABLE IF EXISTS trades CASCADE;</sql>
-    </changeSet>
-
-    <!-- Step 2: range-partitioned parent on trade_date. PK / UNIQUE include
-         the partition key (Postgres declarative-partitioning requirement). -->
-    <changeSet id="004-trades-partitioned-parent" author="student">
-        <preConditions onFail="MARK_RAN">
-            <dbms type="postgresql"/>
-        </preConditions>
-        <sql splitStatements="true" endDelimiter=";">
-            CREATE TABLE trades (
-                id              BIGSERIAL,
-                trade_ref       VARCHAR(30)   NOT NULL,
-                instrument_id   BIGINT        NOT NULL REFERENCES instruments(id),
-                counterparty_id BIGINT        NOT NULL REFERENCES counterparties(id),
-                asset_class     VARCHAR(20)   NOT NULL,
-                side            VARCHAR(4)    NOT NULL,
-                quantity        NUMERIC(18,4) NOT NULL,
-                price           NUMERIC(18,4) NOT NULL,
-                trade_date      DATE          NOT NULL,
-                status          VARCHAR(20)   NOT NULL DEFAULT 'PENDING',
-                deleted_at      TIMESTAMP,
-                created_at      TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
-                modified_at     TIMESTAMP,
-                PRIMARY KEY (id, trade_date),
-                UNIQUE (trade_ref, trade_date)
-            ) PARTITION BY RANGE (trade_date);
-            CREATE INDEX idx_trades_trade_date ON trades (trade_date);
-            CREATE INDEX idx_trades_status     ON trades (status);
-        </sql>
+        <comment>Placeholder: students rebuild this in ADV007. Trainer copy
+                 ships a no-op so dev/uat boot cleanly.</comment>
+        <sql>SELECT 1;</sql>
         <rollback>
+<<<<<<< HEAD
             <sql>DROP TABLE IF EXISTS trades CASCADE;</sql>
         </rollback>
     </changeSet>
@@ -111,8 +158,15 @@
                         EXECUTE format('DROP TABLE IF EXISTS %s;', r.part_name);
                     END LOOP;
                 END $$;
+>>>>>>> c2757038 (daywise-files)
             </sql>
+=======
+            <sql>SELECT 1;</sql>
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
         </rollback>
+
+
     </changeSet>
+
 
 </databaseChangeLog>

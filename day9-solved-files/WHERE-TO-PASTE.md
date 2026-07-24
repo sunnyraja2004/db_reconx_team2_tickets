@@ -7,6 +7,7 @@ retry + DLQ, and a topics-config bean that declares everything on
 startup so `docker compose up` is one command.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 **How this folder works**
 
 The real `backend/` tree ships all six Kafka files as starter stubs —
@@ -27,20 +28,34 @@ read the diff first.
 =======
 **What this folder ships** (all six Kafka files at their real
 `backend/src/main/java/com/dbtraining/reconx/kafka/` paths):
+=======
+**How this folder works**
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 
-- ✅ `KafkaTopicsConfig.java` — completed, declares all four topics via `TopicBuilder`.
-- ✅ `TradeEventProducer.java` — completed, publishes via `KafkaTemplate.send(topic, tradeRef, event)`.
-- ⏳ `ReconciliationConsumer.java` — stub, TODO block inline (needs `@KafkaListener` body).
-- ⏳ `AuditEventConsumer.java` — stub, TODO block inline.
-- ⏳ `AlertConsumer.java` — stub, TODO block inline.
-- ⏳ `KafkaErrorHandlerConfig.java` — stub, TODO block inline (retry backoff + `DeadLetterPublishingRecoverer`).
+The real `backend/` tree ships all six Kafka files as starter stubs —
+method bodies do `throw new UnsupportedOperationException("…")` with a
+`TODO(TICKET-…)` comment above each. This folder contains **complete
+drop-in replacement files** for all six:
 
+<<<<<<< HEAD
 The two completed files unblock topic auto-creation and event
 publishing; the four stubs are yours to finish — the inline TODO
 comments in each file spell out the exact wiring (`@KafkaListener(topics
 = ..., groupId = ...)` + a 2–3 line body). See the "How to finish the
 six files" table below.
 >>>>>>> c2757038 (daywise-files)
+=======
+- ✅ `KafkaTopicsConfig.java` — declares all four topics via `TopicBuilder`.
+- ✅ `TradeEventProducer.java` — publishes via `KafkaTemplate.send(topic, tradeRef, event)` with success/failure logging.
+- ✅ `ReconciliationConsumer.java` — `@KafkaListener` on `trade-events` (group `recon-service`).
+- ✅ `AuditEventConsumer.java` — `@KafkaListener` on `trade-events` (group `audit-service`), persists to `AuditLogEntry`.
+- ✅ `AlertConsumer.java` — `@KafkaListener` on `system-alerts` (group `alert-service`).
+- ✅ `KafkaErrorHandlerConfig.java` — `DefaultErrorHandler` with `ExponentialBackOff(1000, 2.0)` capped at 3 attempts + `DeadLetterPublishingRecoverer` routing to `{topic}-dlq`.
+
+You can **overlay** the whole `backend/` subtree in one shot, or
+**open each file** in this folder side-by-side with the starter to
+read the diff first.
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 
 ## Quick start
 

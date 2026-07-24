@@ -42,6 +42,7 @@ public record Money(BigDecimal amount, Currency currency) {
     /** Add another Money of the same currency. Throws on currency mismatch. */
     public Money plus(Money other) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         // TODO(TICKET-ADV024): validate same currency, then return a new Money
         //                     whose amount = this.amount + other.amount.
         java.util.Objects.requireNonNull(other, "Other money must not be null");
@@ -63,5 +64,15 @@ public record Money(BigDecimal amount, Currency currency) {
 =======
 >>>>>>> c2757038 (daywise-files)
         return new Money(this.amount.multiply(multiplier), this.currency);
+=======
+        // TODO(TICKET-ADV024): validate same currency, then return a new Money
+        //                     whose amount = this.amount + other.amount.
+        throw new UnsupportedOperationException("TICKET-ADV024");
+    }
+
+    public Money times(BigDecimal multiplier) {
+        // TODO(TICKET-ADV024): return a new Money whose amount = this.amount * multiplier.
+        throw new UnsupportedOperationException("TICKET-ADV024");
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     }
 }

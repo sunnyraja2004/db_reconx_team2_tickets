@@ -1,6 +1,9 @@
 package com.dbtraining.reconx.kafka;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.context.annotation.Bean;
@@ -9,9 +12,12 @@ import org.springframework.kafka.core.KafkaOperations;
 import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.util.backoff.ExponentialBackOff;
+<<<<<<< HEAD
 =======
 import org.springframework.context.annotation.Configuration;
 >>>>>>> c2757038 (daywise-files)
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 
 /**
  * ============================================================================
@@ -32,6 +38,7 @@ import org.springframework.context.annotation.Configuration;
  *          record on `trade-events-dlq` with the same partition as the
  *          original.
 <<<<<<< HEAD
+<<<<<<< HEAD
  *
  * GOTCHA:  trade-events-dlq must already exist (TICKET-ADV128). The
 =======
@@ -51,6 +58,10 @@ import org.springframework.context.annotation.Configuration;
  *
  *  GOTCHA: trade-events-dlq must already exist (TICKET-ADV128). The
 >>>>>>> c2757038 (daywise-files)
+=======
+ *
+ * GOTCHA:  trade-events-dlq must already exist (TICKET-ADV128). The
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
  *          recoverer does NOT auto-create the topic.
  * ============================================================================
  */
@@ -58,6 +69,9 @@ import org.springframework.context.annotation.Configuration;
 public class KafkaErrorHandlerConfig {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     @Bean
     public DefaultErrorHandler errorHandler(KafkaOperations<Object, Object> template) {
         DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
@@ -70,7 +84,10 @@ public class KafkaErrorHandlerConfig {
 
         return new DefaultErrorHandler(recoverer, backoff);
     }
+<<<<<<< HEAD
 =======
     // TODO(TICKET-ADV134 + ADV135): define the errorHandler @Bean — see comments above.
 >>>>>>> c2757038 (daywise-files)
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 }

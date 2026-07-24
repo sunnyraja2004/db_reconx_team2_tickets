@@ -5,6 +5,9 @@ to Prometheus + Grafana, gate CI on coverage + static analysis + a k6
 load test, take screenshots for the demo deck, and tag `v1.0.0`.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 **How this folder works**
 
 Day 10 is about infrastructure files (Dockerfiles, compose, monitoring
@@ -14,8 +17,11 @@ needs. Overlay them into the project root with the targeted `cp`
 commands in Quick Start below; each file lands next to (or replaces)
 its counterpart in the real tree.
 
+<<<<<<< HEAD
 =======
 >>>>>>> c2757038 (daywise-files)
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 **What this folder ships** (a snapshot of the current infra + release
 files at their real project-root paths):
 

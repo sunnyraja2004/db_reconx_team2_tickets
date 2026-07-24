@@ -53,7 +53,8 @@ public Money notional() {
 }
 =======
     @Override public Money notional() {
-        return new Money(faceValue, currency);
+        // TODO(TICKET-ADV021): return new Money(faceValue, currency).
+        throw new UnsupportedOperationException("TICKET-ADV021");
     }
 >>>>>>> c2757038 (daywise-files)
 
@@ -66,6 +67,7 @@ public Money notional() {
     public long counterpartyId()      { return counterpartyId; }
 
     @Override public boolean equals(Object o) {
+<<<<<<< HEAD
         return (o instanceof BondTrade other) && tradeRef.equals(other.tradeRef);
 <<<<<<< HEAD
 =======
@@ -73,13 +75,20 @@ public Money notional() {
     @Override public int hashCode() {
         return tradeRef.hashCode();
 >>>>>>> c2757038 (daywise-files)
+=======
+        // TODO(TICKET-ADV028): pattern-match on BondTrade and compare tradeRef.
+        throw new UnsupportedOperationException("TICKET-ADV028");
+    }
+    @Override public int hashCode() {
+        // TODO(TICKET-ADV028): hash from tradeRef.
+        throw new UnsupportedOperationException("TICKET-ADV028");
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     }
     @Override public int hashCode() { return tradeRef.hashCode(); }
 
     @Override public String toString() {
-        return "BondTrade[ref=%s, isin=%s, face=%s %s, coupon=%s, maturity=%s, side=%s]"
-                .formatted(tradeRef, isin, faceValue, currency.getCurrencyCode(),
-                        couponRate, maturityDate, side);
+        // TODO(TICKET-ADV030): "BondTrade[ref=..., isin=..., face=... CCY, coupon=..., maturity=..., side=...]"
+        throw new UnsupportedOperationException("TICKET-ADV030");
     }
 
     public static final class Builder {
@@ -102,6 +111,7 @@ public Money notional() {
         public Builder counterpartyId(long v)      { this.counterpartyId = v; return this; }
 
         public BondTrade build() {
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     Objects.requireNonNull(tradeRef, "tradeRef");
@@ -148,6 +158,13 @@ public Money notional() {
             if (maturityDate.isBefore(tradeDate))
                 throw new IllegalStateException("maturityDate cannot be before tradeDate");
             return new BondTrade(this);
+=======
+            // TODO(TICKET-ADV021):
+            //   - Objects.requireNonNull each required field.
+            //   - maturityDate must not be before tradeDate (IllegalStateException otherwise).
+            //   - return new BondTrade(this).
+            throw new UnsupportedOperationException("TICKET-ADV021");
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
         }
 >>>>>>> c2757038 (daywise-files)
     }

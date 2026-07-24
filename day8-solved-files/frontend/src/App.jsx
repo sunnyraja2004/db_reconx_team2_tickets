@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // TICKET-ADV122 — Lazy + Suspense for route-based code splitting.
 // TICKET-ADV124 — theme toggle wired to ThemeContext.
 import React, { Suspense, lazy } from 'react';
@@ -11,14 +12,22 @@ import { useTheme } from '@context/ThemeContext.jsx';
 // chunk per route. The <Suspense> fallback shows while the chunk downloads.
 =======
 // TICKET-ADV122 — Lazy + Suspense for route-based code splitting
+=======
+// Lazy + Suspense for route-based code splitting.
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import { withErrorBoundary } from '@components/withErrorBoundary.jsx';
 
+<<<<<<< HEAD
 // TODO(TICKET-ADV122): wrap each page import in React.lazy() so Vite emits a
 // separate chunk per route. The <Suspense> fallback below shows while the
 // chunk downloads.
 >>>>>>> c2757038 (daywise-files)
+=======
+// Each page import is wrapped in React.lazy() so Vite emits a separate
+// chunk per route. The <Suspense> fallback below shows while the chunk downloads.
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 const Dashboard = lazy(() => import('@pages/Dashboard.jsx'));
 const Trades    = lazy(() => import('@pages/Trades.jsx'));
 const AddTrade  = lazy(() => import('@pages/AddTrade.jsx'));

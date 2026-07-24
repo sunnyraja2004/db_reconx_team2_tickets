@@ -1,10 +1,15 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // React Hook Form + Yup validation.
 import React, { useState } from 'react';
 =======
 // TICKET-ADV123 — React Hook Form + Yup validation.
 import React from 'react';
 >>>>>>> c2757038 (daywise-files)
+=======
+// React Hook Form + Yup validation.
+import React, { useState } from 'react';
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -12,6 +17,9 @@ import { withAuth } from '@components/withAuth.jsx';
 import { api } from '@services/apiService.js';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 const schema = yup.object({
   tradeRef:       yup.string()
                      .matches(/^[A-Z]{3}-\d{8}-\d{4}$/, 'Format: AAA-YYYYMMDD-NNNN')
@@ -24,6 +32,7 @@ const schema = yup.object({
   price:          yup.number().typeError('Must be a number').positive().required(),
   tradeDate:      yup.date().typeError('Must be a valid date').required(),
 });
+<<<<<<< HEAD
 
 function AddTrade() {
   const [serverError, setServerError] = useState(null);
@@ -67,21 +76,54 @@ function AddTrade() {
 //     price          — positive number
 //     tradeDate      — date
 const schema = yup.object({});
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 
 function AddTrade() {
-  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } =
-        useForm({ resolver: yupResolver(schema) });
+  const [serverError, setServerError] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: 'onBlur',
+    defaultValues: {
+      tradeRef: '',
+      instrumentId: '',
+      counterpartyId: '',
+      assetClass: 'EQUITY',
+      side: 'BUY',
+      quantity: '',
+      price: '',
+      tradeDate: '',
+    },
+  });
 
   async function onSubmit(values) {
+<<<<<<< HEAD
     // TODO(TICKET-ADV123): call api.createTrade(values), reset the form on
     //                     success, surface server errors back to the user.
 >>>>>>> c2757038 (daywise-files)
+=======
+    setServerError(null);
+    try {
+      await api.createTrade(values);
+      reset();
+    } catch (err) {
+      setServerError(err.message || 'Failed to create trade');
+    }
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
   }
 
   return (
     <section>
       <h2>Add trade</h2>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
       <form onSubmit={handleSubmit(onSubmit)} className="trade-form" noValidate>
         <label>Trade ref
           <input {...register('tradeRef')} placeholder="EQU-20260603-0001" />
@@ -133,6 +175,7 @@ function AddTrade() {
 
         {serverError && <p role="alert" className="form-error">{serverError}</p>}
         {isSubmitSuccessful && !serverError && <p role="status">Trade created.</p>}
+<<<<<<< HEAD
 =======
       <form onSubmit={handleSubmit(onSubmit)} className="trade-form">
         {/* TODO(TICKET-ADV123): wire up <input {...register('tradeRef')} /> for
@@ -141,6 +184,8 @@ function AddTrade() {
         <label>Trade ref   <input {...register('tradeRef')} placeholder="EQU-20260603-0001" /></label>
         {errors.tradeRef && <p className="form-error">{errors.tradeRef.message}</p>}
 >>>>>>> c2757038 (daywise-files)
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 
         <button disabled={isSubmitting} type="submit">Submit</button>
       </form>

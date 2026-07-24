@@ -50,10 +50,15 @@ public final class FXTrade implements TradeType {
     /** Notional in ccy2 = notionalCcy1 * fxRate. */
     @Override public Money notional() {
 <<<<<<< HEAD
+<<<<<<< HEAD
     return new Money(notionalCcy1.multiply(fxRate), ccy2);
 }
 =======
         return new Money(notionalCcy1.multiply(fxRate), ccy2);
+=======
+        // TODO(TICKET-ADV020): return new Money(notionalCcy1 * fxRate, ccy2).
+        throw new UnsupportedOperationException("TICKET-ADV020");
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     }
 >>>>>>> c2757038 (daywise-files)
 
@@ -65,6 +70,7 @@ public final class FXTrade implements TradeType {
     public long counterpartyId()     { return counterpartyId; }
 
     @Override public boolean equals(Object o) {
+<<<<<<< HEAD
         return (o instanceof FXTrade other) && tradeRef.equals(other.tradeRef);
 <<<<<<< HEAD
 =======
@@ -72,6 +78,14 @@ public final class FXTrade implements TradeType {
     @Override public int hashCode() {
         return tradeRef.hashCode();
 >>>>>>> c2757038 (daywise-files)
+=======
+        // TODO(TICKET-ADV028): pattern-match on FXTrade and compare tradeRef.
+        throw new UnsupportedOperationException("TICKET-ADV028");
+    }
+    @Override public int hashCode() {
+        // TODO(TICKET-ADV028): hash from tradeRef.
+        throw new UnsupportedOperationException("TICKET-ADV028");
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     }
     @Override public int hashCode() { return tradeRef.hashCode(); }
 
@@ -93,9 +107,8 @@ public String toString() {
 }
 =======
     @Override public String toString() {
-        return "FXTrade[ref=%s, %s/%s, notional=%s %s, rate=%s, side=%s]"
-                .formatted(tradeRef, ccy1.getCurrencyCode(), ccy2.getCurrencyCode(),
-                        notionalCcy1, ccy1.getCurrencyCode(), fxRate, side);
+        // TODO(TICKET-ADV030): "FXTrade[ref=..., CCY1/CCY2, notional=... CCY1, rate=..., side=...]"
+        throw new UnsupportedOperationException("TICKET-ADV030");
     }
 >>>>>>> c2757038 (daywise-files)
 
@@ -117,6 +130,7 @@ public String toString() {
         public Builder counterpartyId(long v)      { this.counterpartyId = v; return this; }
 
         public FXTrade build() {
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     Objects.requireNonNull(tradeRef, "tradeRef");
@@ -152,6 +166,14 @@ public String toString() {
             if (ccy1.equals(ccy2)) throw new IllegalStateException("ccy1 and ccy2 must differ");
             if (fxRate.signum() <= 0) throw new IllegalStateException("fxRate must be > 0");
             return new FXTrade(this);
+=======
+            // TODO(TICKET-ADV020):
+            //   - Objects.requireNonNull each required field.
+            //   - ccy1 must differ from ccy2 (IllegalStateException otherwise).
+            //   - fxRate must be > 0.
+            //   - return new FXTrade(this).
+            throw new UnsupportedOperationException("TICKET-ADV020");
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
         }
 >>>>>>> c2757038 (daywise-files)
     }

@@ -7,6 +7,9 @@ classes, `Money` and `TradeRef` value objects, a `TradeFactory`, and the
 the finished versions of every file you needed to touch.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 **How this folder works**
 
 The real `backend/` tree ships with Day-2 methods as `TODO(TICKET-…)`
@@ -22,8 +25,11 @@ a real assertion. You can either:
 
 Both flows land at the same result.
 
+<<<<<<< HEAD
 =======
 >>>>>>> c2757038 (daywise-files)
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 **In this file you'll find:**
 
 1. A one-line command to drop the solved files into your project.
@@ -84,10 +90,15 @@ grep for the TODO markers and confirm they are gone:
 | 6 | `backend/src/main/java/com/dbtraining/reconx/model/TradeFactory.java`     | same path | ADV023 |
 | 7 | `backend/src/main/java/com/dbtraining/reconx/model/ReconciliationRule.java` | same path | ADV026 |
 <<<<<<< HEAD
+<<<<<<< HEAD
 | 8 | `backend/src/test/java/com/dbtraining/reconx/model/EquityTradeTest.java`  | same path | ADV019 + ADV028 (test assertions) |
 | 9 | `backend/src/test/java/com/dbtraining/reconx/model/ReconciliationRuleTest.java` | same path | ADV026 (parameterized assertions) |
 =======
 >>>>>>> c2757038 (daywise-files)
+=======
+| 8 | `backend/src/test/java/com/dbtraining/reconx/model/EquityTradeTest.java`  | same path | ADV019 + ADV028 (test assertions) |
+| 9 | `backend/src/test/java/com/dbtraining/reconx/model/ReconciliationRuleTest.java` | same path | ADV026 (parameterized assertions) |
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 
 ---
 
