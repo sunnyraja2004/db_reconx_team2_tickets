@@ -26,4 +26,9 @@
     <include file="changes/007-users-rbac.xml"    relativeToChangelogFile="true"/>
     <include file="changes/008-seed.xml"          relativeToChangelogFile="true"/>
 
+    <changeSet id="day1-complete-tag" author="<team-02>">
+        <tagDatabase tag="day1-complete" />
+    </changeSet>
+    
+
 </databaseChangeLog>
