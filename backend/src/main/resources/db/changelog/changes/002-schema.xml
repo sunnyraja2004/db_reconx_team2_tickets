@@ -18,8 +18,15 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
 
+    <!-- ADV012 - -->
     <!-- ADV006 — counterparties -->
     <changeSet id="002-create-counterparties" author="trainer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="counterparties" />
+            </not>
+        </preConditions>
+        
         <createTable tableName="counterparties">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true"/>
