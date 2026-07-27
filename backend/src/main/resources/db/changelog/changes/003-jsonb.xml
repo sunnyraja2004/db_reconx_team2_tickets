@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+
 <!--
  ============================================================================
  TICKET-ADV009 — JSONB column on instruments (+ GIN index on Postgres)
@@ -9,7 +11,7 @@
  WHY:     Schemaless metadata avoids 12 columns that only apply to one asset
           class. Trade-off: validation moves to the app layer.
  OBSERVE: \d instruments shows metadata jsonb. EXPLAIN ANALYZE on a metadata
-          ->> 'sector' lookup hits idx_instruments_metadata_gin.
+         @> containment query hits idx_instruments_metadata_gin.
  ============================================================================
 -->
 <databaseChangeLog
@@ -22,8 +24,14 @@
         <preConditions onFail="MARK_RAN">
             <dbms type="postgresql"/>
         </preConditions>
-        <sql>ALTER TABLE instruments ADD COLUMN metadata JSONB DEFAULT '{}'::JSONB NOT NULL;</sql>
-        <sql>CREATE INDEX idx_instruments_metadata_gin ON instruments USING GIN (metadata jsonb_path_ops);</sql>
+        <sql>
+    ALTER TABLE instruments
+    ADD COLUMN metadata JSONB NOT NULL DEFAULT '{}'::JSONB;
+
+    CREATE INDEX idx_instruments_metadata_gin
+    ON instruments
+    USING GIN (metadata jsonb_path_ops);
+</sql>
         <rollback>
             <sql>DROP INDEX IF EXISTS idx_instruments_metadata_gin;</sql>
             <sql>ALTER TABLE instruments DROP COLUMN metadata;</sql>
@@ -31,3 +39,4 @@
     </changeSet>
 
 </databaseChangeLog>
+
