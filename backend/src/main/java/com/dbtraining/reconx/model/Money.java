@@ -43,11 +43,16 @@ public record Money(BigDecimal amount, Currency currency) {
     public Money plus(Money other) {
         // TODO(TICKET-ADV024): validate same currency, then return a new Money
         //                     whose amount = this.amount + other.amount.
-        throw new UnsupportedOperationException("TICKET-ADV024");
+        java.util.Objects.requireNonNull(other, "Other money must not be null");
+        if(!this.currency.equals(other.currency)) {
+            throw new IllegalArgumentException("currency mismatch");
+        }
+        return new Money(this.amount.add(other.amount), this.currency);
     }
 
     public Money times(BigDecimal multiplier) {
         // TODO(TICKET-ADV024): return a new Money whose amount = this.amount * multiplier.
-        throw new UnsupportedOperationException("TICKET-ADV024");
+        java.util.Objects.requireNonNull(multiplier, "Multiplier must not be null");
+        return new Money(this.amount.multiply(multiplier), this.currency);
     }
 }
