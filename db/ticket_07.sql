@@ -1,0 +1,22 @@
+-- ADV007: trades parent table, RANGE partitioned on trade_date
+CREATE TABLE trades (
+    id BIGSERIAL,
+    trade_date  DATE NOT NULL,
+    PRIMARY KEY (id, trade_date)
+) PARTITION BY RANGE (trade_date);
+
+-- Monthly children, April -> July 2026
+CREATE TABLE trades_2026_04 PARTITION OF trades
+FOR VALUES FROM ('2026-04-01') TO ('2026-05-01');
+
+CREATE TABLE trades_2026_05 PARTITION OF trades
+FOR VALUES FROM ('2026-05-01') TO ('2026-06-01');
+
+CREATE TABLE trades_2026_06 PARTITION OF trades
+FOR VALUES FROM ('2026-06-01') TO ('2026-07-01');
+
+CREATE TABLE trades_2026_07 PARTITION OF trades
+FOR VALUES FROM ('2026-07-01') TO ('2026-08-01');
+
+-- ANYTHING OUTSIDE THE ACTIVE WINDOW
+CREATE TABLE trades_default PARTITION OF trades DEFAULT;
