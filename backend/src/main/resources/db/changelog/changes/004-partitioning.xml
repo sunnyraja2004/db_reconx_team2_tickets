@@ -1,38 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
  ============================================================================
- TICKET-ADV007 — Monthly partitioning of trades on Postgres
+ TICKET-ADV007 + TICKET-ADV014 — Monthly partitioning of trades on Postgres
+
  WHAT:    Convert trades into a range-partitioned parent on trade_date and
           create partitions for the current rolling 12 months.
- HOW:     Postgres-only via raw SQL. The trainer guide for Day 1 documents
-          the "rename, recreate as partitioned, copy data" pattern that
-          students must run if production data already exists. In this clean
-          starter we recreate trades directly since there's nothing to copy.
- WHY:     500-million-row trades table would kill EXPLAIN; monthly partitions
-          give predictable prune-by-date plans.
- OBSERVE: \d+ trades shows "Partitioned table" + 12 child partitions.
+
+ HOW:     Postgres-only via raw SQL.
+
+ WHY:     PostgreSQL partitioning improves query performance for large trade
+          tables.
+
+ ADV014:
+          This changeset is protected with a PostgreSQL database precondition.
+          Non-Postgres environments skip safely and record the changeset as
+          MARK_RAN.
+
+ OBSERVE: Running Liquibase multiple times does not fail.
  ============================================================================
 -->
+
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
 
-    <!-- Demonstration only: the partitioning conversion is destructive and is
-         taught in the trainer guide Day-1 Sprint 0B. In this starter we
-         create a single partition for the rolling-current-month so the
-         seed data has somewhere to land. -->
+
+    <!--
+        Demonstration only:
+        The partitioning conversion is destructive and taught separately.
+        Starter version ships a no-op so dev/uat boot cleanly.
+    -->
+
     <changeSet id="004-partition-current-month" author="trainer">
+
+        <!--
+            Postgres-only changeset.
+            H2 and other databases skip this migration safely.
+            MARK_RAN records it as completed when the condition fails.
+        -->
         <preConditions onFail="MARK_RAN">
             <dbms type="postgresql"/>
         </preConditions>
-        <comment>Placeholder: students rebuild this in ADV007. Trainer copy
-                 ships a no-op so dev/uat boot cleanly.</comment>
-        <sql>SELECT 1;</sql>
+
+
+        <comment>
+            Placeholder: students rebuild this in ADV007.
+            Trainer copy ships a no-op so dev/uat boot cleanly.
+        </comment>
+
+
+        <sql>
+            SELECT 1;
+        </sql>
+
+
         <rollback>
-            <sql>SELECT 1;</sql>
+            <sql>
+                SELECT 1;
+            </sql>
         </rollback>
+
+
     </changeSet>
+
 
 </databaseChangeLog>
