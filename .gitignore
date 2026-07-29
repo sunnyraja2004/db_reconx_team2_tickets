@@ -1,2 +1,5 @@
 backend/target/
+**/target/
+target/
+
 .idea/
