@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Currency;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -12,23 +13,51 @@ class EquityTradeTest {
 
     @Test
     void builder_buildsWhenAllRequiredPresent() {
-        // TODO(TICKET-ADV019): build an EquityTrade via the Builder with all required fields,
-        //                     then assert tradeRef, notional (price*qty) and assetClass = EQUITY.
-        org.junit.jupiter.api.Assertions.fail("TICKET-ADV019 not implemented yet");
+
+        EquityTrade trade = sampleEquity("SAP-20260603-0001");
+
+        assertThat(trade.tradeRef())
+                .isEqualTo(TradeRef.of("SAP-20260603-0001"));
+
+        assertThat(trade.notional())
+                .isEqualTo(new Money(
+                        new BigDecimal("10000"),
+                        Currency.getInstance("EUR")));
+
+        assertThat(trade.assetClass())
+                .isEqualTo(TradeType.AssetClass.EQUITY);
     }
 
     @Test
     void builder_missingPrice_throws() {
-        // TODO(TICKET-ADV019): omit .price(...) on the Builder and assert build() throws
-        //                     NullPointerException whose message mentions "price".
-        org.junit.jupiter.api.Assertions.fail("TICKET-ADV019 not implemented yet");
+
+        assertThatThrownBy(() ->
+                EquityTrade.builder()
+                        .tradeRef(TradeRef.of("SAP-20260603-0001"))
+                        .instrumentSymbol("SAP.DE")
+                        .quantity(new BigDecimal("100"))
+                        // price intentionally omitted
+                        .currency("EUR")
+                        .side(Side.BUY)
+                        .tradeDate(LocalDate.of(2026, 6, 3))
+                        .counterpartyId(1L)
+                        .build()
+        )
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining("price");
     }
 
     @Test
     void equality_byTradeRef() {
-        // TODO(TICKET-ADV028): two EquityTrades with the same tradeRef are equal and share hashCode;
-        //                     a third with a different tradeRef is not equal.
-        org.junit.jupiter.api.Assertions.fail("TICKET-ADV028 not implemented yet");
+
+        EquityTrade t1 = sampleEquity("SAP-20260603-0001");
+        EquityTrade t2 = sampleEquity("SAP-20260603-0001");
+        EquityTrade t3 = sampleEquity("SAP-20260603-0002");
+
+        assertThat(t1).isEqualTo(t2);
+        assertThat(t1.hashCode()).isEqualTo(t2.hashCode());
+
+        assertThat(t1).isNotEqualTo(t3);
     }
 
     private EquityTrade sampleEquity(String ref) {
@@ -37,8 +66,10 @@ class EquityTradeTest {
                 .instrumentSymbol("SAP.DE")
                 .quantity(new BigDecimal("100"))
                 .price(new BigDecimal("100"))
-                .currency("EUR").side(Side.BUY)
+                .currency("EUR")
+                .side(Side.BUY)
                 .tradeDate(LocalDate.of(2026, 6, 3))
-                .counterpartyId(1L).build();
+                .counterpartyId(1L)
+                .build();
     }
 }
