@@ -1,6 +1,10 @@
 package com.dbtraining.reconx.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Pattern;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -8,18 +12,14 @@ import java.time.LocalDate;
 /**
  * ============================================================================
  * TICKET-ADV053 — TradeRequest DTO (POST body)
- * TICKET-ADV029 — JSR-380 validation annotations live on the DTO, not the entity
- as it is file 
- *
- * WHY:    Putting @Pattern/@Positive/@NotNull on the JPA entity couples
- *         persistence to wire format. The DTO is the wire contract; validate
- *         it before mapping.
  * ============================================================================
  */
 public record TradeRequest(
-        @NotNull
-        @Pattern(regexp = "^[A-Z]{3}-\\d{8}-\\d{4}$",
-                 message = "tradeRef must match AAA-YYYYMMDD-NNNN")
+
+        @NotBlank
+        @Pattern(
+                regexp = "^[A-Z]{3}-\\d{8}-\\d{4}$",
+                message = "tradeRef must match AAA-YYYYMMDD-NNNN")
         String tradeRef,
 
         @NotNull
@@ -35,12 +35,15 @@ public record TradeRequest(
         @Pattern(regexp = "^(BUY|SELL)$")
         String side,
 
-        @NotNull @Positive
+        @NotNull
+        @DecimalMin(value = "0.0", inclusive = false)
         BigDecimal quantity,
 
-        @NotNull @PositiveOrZero
+        @NotNull
+        @DecimalMin(value = "0.0", inclusive = false)
         BigDecimal price,
 
         @NotNull
+        @PastOrPresent
         LocalDate tradeDate
 ) {}
