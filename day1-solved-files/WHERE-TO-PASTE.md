@@ -5,6 +5,10 @@ file you touched today (Liquibase migrations for partitioning + the
 audit-log fix), plus a couple of small backend tweaks. Copy them into
 your project, boot the app, and watch the migrations do their thing.
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 **How this folder works**
 
 The real `backend/` tree ships with Day-1 files as starter versions —
@@ -20,6 +24,11 @@ files** for the Day-1 scope. You can:
 
 Both flows land at the same result.
 
+<<<<<<< HEAD
+=======
+>>>>>>> c2757038 (daywise-files)
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 **In this file you'll find:**
 
 1. A one-line command to drop the solved files into the right place.

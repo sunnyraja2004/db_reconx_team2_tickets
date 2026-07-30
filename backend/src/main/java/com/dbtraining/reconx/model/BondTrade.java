@@ -46,7 +46,7 @@ public final class BondTrade implements TradeType {
     @Override public AssetClass assetClass() { return AssetClass.BOND; }
 
     /** Notional = faceValue in the bond's currency. */
-    @Override
+@Override
 public Money notional() {
     return new Money(faceValue, currency);
 }
@@ -59,10 +59,16 @@ public Money notional() {
     public Side side()                { return side; }
     public long counterpartyId()      { return counterpartyId; }
 
-    @Override public boolean equals(Object o) {
-        return (o instanceof BondTrade other) && tradeRef.equals(other.tradeRef);
-    }
-    @Override public int hashCode() { return tradeRef.hashCode(); }
+    @Override
+public boolean equals(Object o) {
+    return (o instanceof BondTrade other)
+            && tradeRef.equals(other.tradeRef);
+}
+
+@Override
+public int hashCode() {
+    return tradeRef.hashCode();
+}
 
     @Override public String toString() {
         // TODO(TICKET-ADV030): "BondTrade[ref=..., isin=..., face=... CCY, coupon=..., maturity=..., side=...]"
@@ -99,7 +105,6 @@ public Money notional() {
     Objects.requireNonNull(side, "side");
     Objects.requireNonNull(tradeDate, "tradeDate");
 
-
     if (faceValue.signum() <= 0) {
         throw new IllegalStateException("faceValue must be > 0");
     }
@@ -110,17 +115,15 @@ public Money notional() {
 
     if (!maturityDate.isAfter(tradeDate)) {
         throw new IllegalStateException(
-                "maturityDate must be after tradeDate"
-        );
+                "maturityDate must be after tradeDate");
     }
 
     if (isin.length() != 12) {
         throw new IllegalStateException(
-                "ISIN must have length 12"
-        );
+                "ISIN must have length 12");
     }
 
     return new BondTrade(this);
 }
     }
-}
+}       

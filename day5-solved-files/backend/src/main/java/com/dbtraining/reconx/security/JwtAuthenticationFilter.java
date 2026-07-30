@@ -30,9 +30,40 @@ import java.util.List;
  * WHY:     Stateless auth: every request carries its own credential.
  * OBSERVE: A request with a valid token populates SecurityContextHolder; the
  *          downstream controller can use @AuthenticationPrincipal etc.
+<<<<<<< HEAD
+<<<<<<< HEAD
  *
  * NOTE:    Always call chain.doFilter at the end — even on auth failure — so
  *          Spring's normal exception flow can produce a clean 401.
+=======
+ * ============================================================================
+ *
+ *  TODO(TICKET-ADV073):
+ *    String header = req.getHeader("Authorization");
+ *    if (header != null && header.startsWith("Bearer ")) {
+ *        String token = header.substring(7);
+ *        try {
+ *            Claims claims = provider.parse(token);
+ *            String email = claims.getSubject();
+ *            String role  = (String) claims.get("role");
+ *            var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+ *            var auth = new UsernamePasswordAuthenticationToken(email, null, authorities);
+ *            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+ *            SecurityContextHolder.getContext().setAuthentication(auth);
+ *        } catch (JwtException ex) {
+ *            SecurityContextHolder.clearContext();
+ *        }
+ *    }
+ *    chain.doFilter(req, res);
+ *
+ *  HINT: Always call chain.doFilter at the end — even on auth failure — so
+ *        Spring's normal exception flow can produce a clean 401.
+>>>>>>> c2757038 (daywise-files)
+=======
+ *
+ * NOTE:    Always call chain.doFilter at the end — even on auth failure — so
+ *          Spring's normal exception flow can produce a clean 401.
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
  * ============================================================================
  */
 @Component

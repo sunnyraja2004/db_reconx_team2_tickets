@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 // useInfiniteScroll: invokes loadMore() when sentinel is visible.
 import { useEffect, useRef } from 'react';
 
@@ -19,6 +21,39 @@ export function useInfiniteScroll(loadMore) {
     observer.observe(node);
     return () => observer.disconnect();
   }, []);
+=======
+// TICKET-ADV118 — useInfiniteScroll: invokes loadMore() when sentinel is visible.
+import { useRef } from 'react';
+=======
+// useInfiniteScroll: invokes loadMore() when sentinel is visible.
+import { useEffect, useRef } from 'react';
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
+
+export function useInfiniteScroll(loadMore) {
+  const sentinelRef = useRef(null);
+  const loadMoreRef = useRef(loadMore);
+
+<<<<<<< HEAD
+  // TODO(TICKET-ADV118): in a useEffect, create an IntersectionObserver that
+  //                     calls loadMore() when entries[0].isIntersecting.
+  //                     Observe sentinelRef.current. Disconnect in cleanup.
+>>>>>>> c2757038 (daywise-files)
+=======
+  // Keep the latest callback in a ref so the observer doesn't have to churn.
+  useEffect(() => {
+    loadMoreRef.current = loadMore;
+  }, [loadMore]);
+
+  useEffect(() => {
+    const node = sentinelRef.current;
+    if (!node) return undefined;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) loadMoreRef.current();
+    }, { threshold: 0.1 });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 
   return sentinelRef;
 }

@@ -1,6 +1,7 @@
 package com.dbtraining.reconx.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * ============================================================================
@@ -29,41 +30,44 @@ public enum ReconciliationRule {
 
     ReconciliationRule(BigDecimal priceTolerancePct, BigDecimal qtyToleranceAbs) {
         this.priceTolerancePct = priceTolerancePct;
-        this.qtyToleranceAbs   = qtyToleranceAbs;
+        this.qtyToleranceAbs = qtyToleranceAbs;
     }
 
-    public BigDecimal priceTolerancePct() { return priceTolerancePct; }
-    public BigDecimal qtyToleranceAbs()   { return qtyToleranceAbs; }
+    public BigDecimal priceTolerancePct() {
+        return priceTolerancePct;
+    }
+
+    public BigDecimal qtyToleranceAbs() {
+        return qtyToleranceAbs;
+    }
 
     /**
      * Decide whether two prices/quantities are within this rule's tolerance.
+     *
      * @return true if BOTH the price diff (as %) AND the qty diff (as abs)
-     *         are within tolerance.
+     * are within tolerance.
      */
-    public boolean matches(BigDecimal internalPrice, BigDecimal internalQty,
-                       BigDecimal externalPrice, BigDecimal externalQty) {
+    public boolean matches(
+            BigDecimal internalPrice,
+            BigDecimal internalQty,
+            BigDecimal externalPrice,
+            BigDecimal externalQty) {
 
-    BigDecimal priceDiff =
-            internalPrice.subtract(externalPrice).abs();
+        BigDecimal priceDiff = internalPrice.subtract(externalPrice).abs();
 
-    BigDecimal priceDiffPct =
-            internalPrice.signum() == 0
-                    ? BigDecimal.ZERO
-                    : priceDiff.divide(
-                            internalPrice,
-                            6,
-                            java.math.RoundingMode.HALF_UP
-                    );
+        BigDecimal priceDiffPct =
+                internalPrice.signum() == 0
+                        ? BigDecimal.ZERO
+                        : priceDiff.divide(
+                                internalPrice,
+                                6,
+                                RoundingMode.HALF_UP);
 
-    BigDecimal qtyDiff =
-            internalQty.subtract(externalQty).abs();
+        BigDecimal qtyDiff = internalQty.subtract(externalQty).abs();
 
-    boolean priceOk =
-            priceDiffPct.compareTo(priceTolerancePct) <= 0;
+        boolean priceOk = priceDiffPct.compareTo(priceTolerancePct) <= 0;
+        boolean qtyOk = qtyDiff.compareTo(qtyToleranceAbs) <= 0;
 
-    boolean qtyOk =
-            qtyDiff.compareTo(qtyToleranceAbs) <= 0;
-
-    return priceOk && qtyOk;
-}
+        return priceOk && qtyOk;
+    }
 }

@@ -41,18 +41,19 @@ public record Money(BigDecimal amount, Currency currency) {
 
     /** Add another Money of the same currency. Throws on currency mismatch. */
     public Money plus(Money other) {
-        // TODO(TICKET-ADV024): validate same currency, then return a new Money
-        //                     whose amount = this.amount + other.amount.
-        java.util.Objects.requireNonNull(other, "Other money must not be null");
-        if(!this.currency.equals(other.currency)) {
-            throw new IllegalArgumentException("currency mismatch");
+        Objects.requireNonNull(other, "Other money must not be null");
+
+        if (!this.currency.equals(other.currency)) {
+            throw new IllegalArgumentException(
+                    "Cannot add %s to %s — currency mismatch"
+                            .formatted(other.currency, this.currency));
         }
+
         return new Money(this.amount.add(other.amount), this.currency);
     }
 
     public Money times(BigDecimal multiplier) {
-        // TODO(TICKET-ADV024): return a new Money whose amount = this.amount * multiplier.
-        java.util.Objects.requireNonNull(multiplier, "Multiplier must not be null");
+        Objects.requireNonNull(multiplier, "Multiplier must not be null");
         return new Money(this.amount.multiply(multiplier), this.currency);
     }
 }

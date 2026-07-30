@@ -18,7 +18,11 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
+<<<<<<< HEAD
       '/api': { target: 'http://localhost:8081', changeOrigin: true },
+=======
+      '/api': { target: 'http://localhost:8080', changeOrigin: true },
+>>>>>>> c2757038 (daywise-files)
     },
   },
   test: {

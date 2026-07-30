@@ -1,4 +1,12 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 // Login page exchanging email/password for a JWT.
+=======
+// TICKET-ADV072 — Login page exchanging email/password for a JWT.
+>>>>>>> c2757038 (daywise-files)
+=======
+// Login page exchanging email/password for a JWT.
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@context/AuthContext.jsx';
@@ -13,6 +21,10 @@ export default function Login() {
 
   async function submit(e) {
     e.preventDefault();
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     setError(null);
     try {
       const { token, role } = await api.login(email, password);
@@ -21,6 +33,16 @@ export default function Login() {
     } catch (err) {
       setError(err.message || 'Login failed');
     }
+<<<<<<< HEAD
+=======
+    // TODO(TICKET-ADV072):
+    //   1. call api.login(email, password) — it returns { token, role }.
+    //   2. on success: call login(token, role) from AuthContext, then
+    //      navigate('/').
+    //   3. on failure: setError(err.message) so the alert div renders.
+>>>>>>> c2757038 (daywise-files)
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
   }
 
   return (

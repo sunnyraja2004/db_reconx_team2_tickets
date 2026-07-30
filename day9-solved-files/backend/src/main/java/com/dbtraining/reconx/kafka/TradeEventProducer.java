@@ -18,8 +18,26 @@ import org.springframework.stereotype.Component;
  *          impossible (you'd "apply" CREATE after UPDATE).
  * OBSERVE: Kafdrop -> `trade-events` shows one message per published event,
  *          partitioned by tradeRef.
+<<<<<<< HEAD
+<<<<<<< HEAD
  *
  * GOTCHA:  NEVER let a Kafka publish failure roll back the DB transaction.
+=======
+ * ============================================================================
+ *
+ *  TODO(TICKET-ADV129):
+ *    public void publish(TradeEvent event) {
+ *        log.debug("Publishing TradeEvent eventId={} ref={} type={}",
+ *                  event.eventId(), event.tradeRef(), event.eventType());
+ *        template.send(TOPIC, event.tradeRef(), event);
+ *    }
+ *
+ *  GOTCHA: NEVER let a Kafka publish failure roll back the DB transaction.
+>>>>>>> c2757038 (daywise-files)
+=======
+ *
+ * GOTCHA:  NEVER let a Kafka publish failure roll back the DB transaction.
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
  *          Publish AFTER commit (use TransactionSynchronizationManager or
  *          @TransactionalEventListener), or accept eventual consistency.
  * ============================================================================
@@ -39,6 +57,10 @@ public class TradeEventProducer {
     public void publish(TradeEvent event) {
         log.debug("Publishing TradeEvent eventId={} ref={} type={}",
                 event.eventId(), event.tradeRef(), event.eventType());
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
         template.send(TOPIC, event.tradeRef(), event)
                 .whenComplete((result, ex) -> {
                     if (ex != null) {
@@ -51,5 +73,11 @@ public class TradeEventProducer {
                                 result.getRecordMetadata().offset());
                     }
                 });
+<<<<<<< HEAD
+=======
+        template.send(TOPIC, event.tradeRef(), event);
+>>>>>>> c2757038 (daywise-files)
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
     }
 }

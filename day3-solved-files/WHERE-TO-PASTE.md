@@ -5,6 +5,10 @@ Welcome to Day 3 — the streams-and-tests day. You'll fill out the
 `TradeAnalyticsService` full of Collectors, and real assertions for the
 `ReconciliationEngineTest` that were sitting as `fail(...)` placeholders.
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 **How this folder works**
 
 The real `backend/` tree ships with Day-3 methods as `TODO(TICKET-…)`
@@ -19,6 +23,11 @@ filled in, every `fail(...)` is a real assertion. You can either:
 
 Both flows land at the same result.
 
+<<<<<<< HEAD
+=======
+>>>>>>> c2757038 (daywise-files)
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 **In this file you'll find:**
 
 1. A one-line command to drop the solved files into your project.
@@ -46,10 +55,19 @@ so you can copy the whole `backend/` tree over the top of the real
 cp -R day3-solved-files/backend/ backend/
 ```
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 That command replaces exactly three files in `backend/` (the ones
 listed in the "File-by-file map" below). Every other file in your
 `backend/` tree is left alone.
 
+<<<<<<< HEAD
+=======
+>>>>>>> c2757038 (daywise-files)
+=======
+>>>>>>> a48c151f (checkpoint: staged reverts + solved-file writes + WHERE-TO-PASTE updates before build verification)
 Then jump to **"Run the project"** below.
 
 ---
