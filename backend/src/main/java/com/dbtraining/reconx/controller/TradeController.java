@@ -107,14 +107,18 @@ public ResponseEntity<TradeResponse> create(
     }
 
     @PatchMapping("/{id}/status")
-    @Operation(summary = "Update only the status field")
-    public TradeResponse updateStatus(@PathVariable Long id,
-                                      @RequestBody Map<String, String> body,
-                                      @AuthenticationPrincipal Object principal) {
-        // TODO(TICKET-ADV066): read body.get("status") and call
-        // service.updateStatus(id, status, actor). Return mapper.toResponse(saved).
-        throw new UnsupportedOperationException("TICKET-ADV066");
-    }
+@Operation(summary = "Update only the status field")
+public TradeResponse updateStatus(@PathVariable Long id,
+                                  @RequestBody Map<String, String> body,
+                                  @AuthenticationPrincipal Object principal) {
+
+    String actor = String.valueOf(principal);
+    String status = body.get("status");
+
+    Trade saved = service.updateStatus(id, status, actor);
+
+    return mapper.toResponse(saved);
+}
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Soft delete (sets deleted_at)")
