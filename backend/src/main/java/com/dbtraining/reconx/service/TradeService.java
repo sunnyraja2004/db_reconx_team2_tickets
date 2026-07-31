@@ -56,13 +56,37 @@ public class TradeService {
     }
 
     public Trade create(TradeRequest req, String actor) {
-        // TODO(TICKET-ADV064): reject duplicate tradeRef via DuplicateTradeRefException,
-        //   build a new Trade with instrument + counterparty looked up from
-        //   their repos (throw TradeNotFoundException on miss), status = "PENDING",
-        //   save, then:
-        //     - metrics.incrementTradeCreated() + metrics.recordTradeValue(qty*price) — TICKET-ADV083
-        //     - events.publish(new TradeEvent(... TRADE_CREATED ... actor ...)) — TICKET-ADV129
-        throw new UnsupportedOperationException("TICKET-ADV064");
+        // Reject duplicate tradeRef
+    tradeRepo.findByTradeRef(req.tradeRef())
+            .ifPresent(t -> {
+                throw new DuplicateTradeRefException(req.tradeRef());
+            });
+
+    // Look up Instrument
+    var instrument = instRepo.findById(req.instrumentId())
+            .orElseThrow(() ->
+                    new TradeNotFoundException("Instrument " + req.instrumentId()));
+
+    // Look up Counterparty
+    var counterparty = cpRepo.findById(req.counterpartyId())
+            .orElseThrow(() ->
+                    new TradeNotFoundException("Counterparty " + req.counterpartyId()));
+
+    // Build Trade entity
+    Trade trade = new Trade();
+    trade.setTradeRef(req.tradeRef());
+    trade.setInstrument(instrument);
+    trade.setCounterparty(counterparty);
+    trade.setAssetClass(req.assetClass());
+    trade.setSide(req.side());
+    trade.setQuantity(req.quantity());
+    trade.setPrice(req.price());
+    trade.setTradeDate(req.tradeDate());
+    trade.setStatus("PENDING");
+
+    // Save
+    Trade saved = tradeRepo.save(trade);
+    return saved;
     }
 
     public Trade update(Long id, TradeRequest req, String actor) {
