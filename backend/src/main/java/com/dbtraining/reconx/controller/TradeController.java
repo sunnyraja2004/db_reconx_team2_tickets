@@ -80,57 +80,54 @@ public class TradeController {
     }
 
     @PostMapping
-@Operation(summary = "Create a trade")
-public ResponseEntity<TradeResponse> create(
-        @Valid @RequestBody TradeRequest req,
-        @AuthenticationPrincipal Object principal) {
+    @Operation(summary = "Create a trade")
+    public ResponseEntity<TradeResponse> create(
+            @Valid @RequestBody TradeRequest req,
+            @AuthenticationPrincipal Object principal) {
 
-    String actor = String.valueOf(principal);
+        String actor = String.valueOf(principal);
 
-    Trade saved = service.create(req, actor);
+        Trade saved = service.create(req, actor);
 
-    URI uri = URI.create("/api/v1/trades/" + saved.getId());
+        URI uri = URI.create("/api/v1/trades/" + saved.getId());
 
-    return ResponseEntity
-            .created(uri)
-            .body(mapper.toResponse(saved));
-}
+        return ResponseEntity
+                .created(uri)
+                .body(mapper.toResponse(saved));
+    }
 
     @PutMapping("/{id}")
     @Operation(summary = "Full update of a trade")
-    public TradeResponse update(@PathVariable Long id,
-                                @Valid @RequestBody TradeRequest req,
-                                @AuthenticationPrincipal Object principal) {
+    public TradeResponse update(
+            @PathVariable Long id,
+            @Valid @RequestBody TradeRequest req,
+            @AuthenticationPrincipal Object principal) {
+
         String actor = String.valueOf(principal);
         return mapper.toResponse(service.update(id, req, actor));
     }
 
     @PatchMapping("/{id}/status")
     @Operation(summary = "Update only the status field")
-    public TradeResponse updateStatus(@PathVariable Long id,
-                                      @RequestBody Map<String, String> body,
-                                      @AuthenticationPrincipal Object principal) {
+    public TradeResponse updateStatus(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body,
+            @AuthenticationPrincipal Object principal) {
+
         String actor = String.valueOf(principal);
         String status = body.get("status");
-        return mapper.toResponse(service.updateStatus(id, status, actor));
+
+        Trade saved = service.updateStatus(id, status, actor);
+
+        return mapper.toResponse(saved);
     }
-@Operation(summary = "Update only the status field")
-public TradeResponse updateStatus(@PathVariable Long id,
-                                  @RequestBody Map<String, String> body,
-                                  @AuthenticationPrincipal Object principal) {
-
-    String actor = String.valueOf(principal);
-    String status = body.get("status");
-
-    Trade saved = service.updateStatus(id, status, actor);
-
-    return mapper.toResponse(saved);
-}
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Soft delete (sets deleted_at)")
-    public ResponseEntity<Void> delete(@PathVariable Long id,
-                                       @AuthenticationPrincipal Object principal) {
+    public ResponseEntity<Void> delete(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Object principal) {
+
         service.softDelete(id, String.valueOf(principal));
         return ResponseEntity.noContent().build();
     }
