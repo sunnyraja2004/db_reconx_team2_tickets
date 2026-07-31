@@ -101,12 +101,19 @@ public ResponseEntity<TradeResponse> create(
     public TradeResponse update(@PathVariable Long id,
                                 @Valid @RequestBody TradeRequest req,
                                 @AuthenticationPrincipal Object principal) {
-        // TODO(TICKET-ADV065): delegate to service.update(id, req, actor)
-        // and map the updated entity through mapper.toResponse.
-        throw new UnsupportedOperationException("TICKET-ADV065");
+        String actor = String.valueOf(principal);
+        return mapper.toResponse(service.update(id, req, actor));
     }
 
     @PatchMapping("/{id}/status")
+    @Operation(summary = "Update only the status field")
+    public TradeResponse updateStatus(@PathVariable Long id,
+                                      @RequestBody Map<String, String> body,
+                                      @AuthenticationPrincipal Object principal) {
+        String actor = String.valueOf(principal);
+        String status = body.get("status");
+        return mapper.toResponse(service.updateStatus(id, status, actor));
+    }
 @Operation(summary = "Update only the status field")
 public TradeResponse updateStatus(@PathVariable Long id,
                                   @RequestBody Map<String, String> body,
@@ -124,7 +131,7 @@ public TradeResponse updateStatus(@PathVariable Long id,
     @Operation(summary = "Soft delete (sets deleted_at)")
     public ResponseEntity<Void> delete(@PathVariable Long id,
                                        @AuthenticationPrincipal Object principal) {
-        // TODO(TICKET-ADV067): service.softDelete(id, actor); return 204 No Content.
-        throw new UnsupportedOperationException("TICKET-ADV067");
+        service.softDelete(id, String.valueOf(principal));
+        return ResponseEntity.noContent().build();
     }
 }
