@@ -114,6 +114,18 @@ public ResponseEntity<TradeResponse> create(
         String status = body.get("status");
         return mapper.toResponse(service.updateStatus(id, status, actor));
     }
+@Operation(summary = "Update only the status field")
+public TradeResponse updateStatus(@PathVariable Long id,
+                                  @RequestBody Map<String, String> body,
+                                  @AuthenticationPrincipal Object principal) {
+
+    String actor = String.valueOf(principal);
+    String status = body.get("status");
+
+    Trade saved = service.updateStatus(id, status, actor);
+
+    return mapper.toResponse(saved);
+}
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Soft delete (sets deleted_at)")

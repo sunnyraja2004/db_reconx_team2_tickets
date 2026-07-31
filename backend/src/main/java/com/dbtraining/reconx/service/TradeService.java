@@ -117,6 +117,33 @@ public class TradeService {
         return saved;
     }
 
+    Trade trade = tradeRepo.findById(id)
+            .orElseThrow(() ->
+                    new TradeNotFoundException(String.valueOf(id)));
+
+    trade.setStatus(status);
+
+    Trade saved = tradeRepo.save(trade);
+
+    // TODO (ADV129)
+    // Uncomment after TradeEventProducer.publish() is implemented.
+    /*
+    events.publish(
+            new TradeEvent(
+                    UUID.randomUUID(),
+                    saved.getTradeRef(),
+                    TradeEvent.EventType.TRADE_UPDATED,
+                    Instant.now(),
+                    actor,
+                    null,
+                    status
+            )
+    );
+    */
+
+    return saved;
+}
+
     public void softDelete(Long id, String actor) {
         Trade trade = tradeRepo.findById(id)
                 .orElseThrow(() -> new TradeNotFoundException("id=" + id));
