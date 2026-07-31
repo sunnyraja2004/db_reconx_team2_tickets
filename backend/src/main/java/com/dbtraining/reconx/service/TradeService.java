@@ -65,16 +65,20 @@ public class TradeService {
         var counterparty = cpRepo.findById(req.counterpartyId())
                 .orElseThrow(() -> new TradeNotFoundException("counterparty " + req.counterpartyId()));
 
-        var saved = new Trade();
-        saved.setTradeRef(req.tradeRef());
-        saved.setInstrument(instrument);
-        saved.setCounterparty(counterparty);
-        saved.setAssetClass(req.assetClass());
-        saved.setSide(req.side());
-        saved.setQuantity(req.quantity());
-        saved.setPrice(req.price());
-        saved.setTradeDate(req.tradeDate());
-        saved.setStatus("PENDING");
+        // var saved = new Trade();
+        // saved.setTradeRef(req.tradeRef());
+        // saved.setInstrument(instrument);
+        // saved.setCounterparty(counterparty);
+        // saved.setAssetClass(req.assetClass());
+        // saved.setSide(req.side());
+        // saved.setQuantity(req.quantity());
+        // saved.setPrice(req.price());
+        // saved.setTradeDate(req.tradeDate());
+        // saved.setStatus("PENDING");
+
+        Trade saved = tradeRepo.save(t);
+        metrics.incrementTradeCreated();
+        metrics.recordTradeValue(saved.getQuantity().multiply(saved.getPrice()).doubleValue());
 
         Trade persisted = tradeRepo.save(saved);
 
