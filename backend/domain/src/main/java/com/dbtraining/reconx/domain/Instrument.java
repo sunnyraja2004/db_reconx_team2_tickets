@@ -1,24 +1,18 @@
 package com.dbtraining.reconx.domain;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
-import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
@@ -43,45 +37,12 @@ public class Instrument {
     private String currency;
 
     /**
-     * Metadata stored as JSON text for portability across H2 and Postgres.
-     * The value is serialized/deserialized by a JPA converter so the database
-     * column can remain a simple text/blob type while the domain model remains a Map.
+     * Metadata stored as structured JSON so the database schema can keep a
+     * native JSON/JSONB column instead of a generic CLOB on Postgres.
      */
-    @Convert(converter = JsonMapConverter.class)
-    @Lob
-    @Column(name = "metadata", columnDefinition = "CLOB")
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "metadata", nullable = false)
     private Map<String, Object> metadata = new HashMap<>();
-
-    @Converter
-    public static class JsonMapConverter implements AttributeConverter<Map<String, Object>, String> {
-        private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-        private static final TypeReference<Map<String, Object>> MAP_TYPE = new TypeReference<>() {
-        };
-
-        @Override
-        public String convertToDatabaseColumn(Map<String, Object> attribute) {
-            if (attribute == null) {
-                return null;
-            }
-            try {
-                return OBJECT_MAPPER.writeValueAsString(attribute);
-            } catch (JsonProcessingException e) {
-                throw new IllegalArgumentException("Unable to serialize metadata", e);
-            }
-        }
-
-        @Override
-        public Map<String, Object> convertToEntityAttribute(String dbData) {
-            if (dbData == null || dbData.isBlank()) {
-                return new HashMap<>();
-            }
-            try {
-                return OBJECT_MAPPER.readValue(dbData, MAP_TYPE);
-            } catch (IOException e) {
-                throw new IllegalArgumentException("Unable to deserialize metadata", e);
-            }
-        }
-    }
 
     public Long getId() {
         return id;
