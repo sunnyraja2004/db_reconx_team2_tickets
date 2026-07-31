@@ -33,7 +33,7 @@ import java.util.Map;
  * ============================================================================
  */
 @RestController
-@RequestMapping("/v1/trades")
+@RequestMapping("/api/v1/trades")
 @Tag(name = "trades", description = "Trade CRUD and search")
 @SecurityRequirement(name = "bearerAuth")
 public class TradeController {
@@ -49,25 +49,15 @@ public class TradeController {
     @GetMapping
     @Operation(summary = "List trades — paginated, filterable, sortable")
     public PagedResponse<TradeResponse> list(
-            @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
 
-            @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate to,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
 
-            @RequestParam(required = false)
-            String status,
+            @RequestParam(required = false) String status,
 
-            @RequestParam(required = false)
-            Long counterpartyId,
+            @RequestParam(required = false) Long counterpartyId,
 
-            @PageableDefault(
-                    size = 20,
-                    sort = "tradeDate",
-                    direction = Sort.Direction.DESC)
-            Pageable pageable) {
+            @PageableDefault(size = 20, sort = "tradeDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Trade> page = service.list(
                 from,
@@ -80,27 +70,27 @@ public class TradeController {
     }
 
     @PostMapping
-@Operation(summary = "Create a trade")
-public ResponseEntity<TradeResponse> create(
-        @Valid @RequestBody TradeRequest req,
-        @AuthenticationPrincipal Object principal) {
+    @Operation(summary = "Create a trade")
+    public ResponseEntity<TradeResponse> create(
+            @Valid @RequestBody TradeRequest req,
+            @AuthenticationPrincipal Object principal) {
 
-    String actor = String.valueOf(principal);
+        String actor = String.valueOf(principal);
 
-    Trade saved = service.create(req, actor);
+        Trade saved = service.create(req, actor);
 
-    URI uri = URI.create("/api/v1/trades/" + saved.getId());
+        URI uri = URI.create("/api/v1/trades/" + saved.getId());
 
-    return ResponseEntity
-            .created(uri)
-            .body(mapper.toResponse(saved));
-}
+        return ResponseEntity
+                .created(uri)
+                .body(mapper.toResponse(saved));
+    }
 
     @PutMapping("/{id}")
     @Operation(summary = "Full update of a trade")
     public TradeResponse update(@PathVariable Long id,
-                                @Valid @RequestBody TradeRequest req,
-                                @AuthenticationPrincipal Object principal) {
+            @Valid @RequestBody TradeRequest req,
+            @AuthenticationPrincipal Object principal) {
         String actor = String.valueOf(principal);
         return mapper.toResponse(service.update(id, req, actor));
     }
@@ -108,30 +98,41 @@ public ResponseEntity<TradeResponse> create(
     @PatchMapping("/{id}/status")
     @Operation(summary = "Update only the status field")
     public TradeResponse updateStatus(@PathVariable Long id,
-                                      @RequestBody Map<String, String> body,
-                                      @AuthenticationPrincipal Object principal) {
+            @RequestBody Map<String, String> body,
+            @AuthenticationPrincipal Object principal) {
         String actor = String.valueOf(principal);
         String status = body.get("status");
         return mapper.toResponse(service.updateStatus(id, status, actor));
     }
-@Operation(summary = "Update only the status field")
-public TradeResponse updateStatus(@PathVariable Long id,
-                                  @RequestBody Map<String, String> body,
-                                  @AuthenticationPrincipal Object principal) {
 
-    String actor = String.valueOf(principal);
-    String status = body.get("status");
+    @Operation(summary = "Update only the status field")
+    public TradeResponse updateStatus(@PathVariable Long id,
+            @RequestBody Map<String, String> body,
+            @AuthenticationPrincipal Object principal) {
 
-    Trade saved = service.updateStatus(id, status, actor);
+        String actor = String.valueOf(principal);
+        String status = body.get("status");
 
-    return mapper.toResponse(saved);
-}
+        Trade saved = service.updateStatus(id, status, actor);
+
+        return mapper.toResponse(saved);
+    }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Soft delete (sets deleted_at)")
     public ResponseEntity<Void> delete(@PathVariable Long id,
-                                       @AuthenticationPrincipal Object principal) {
+            @AuthenticationPrincipal Object principal) {
         service.softDelete(id, String.valueOf(principal));
         return ResponseEntity.noContent().build();
+    }
+
+    @Deprecated(since = "v1.4.0", forRemoval = true)
+    @GetMapping(value = "/old-search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> oldSearch(HttpServletResponse response) {
+        response.setHeader("Deprecation", "true");
+        response.setHeader("Sunset", "Sat, 1 Jul 2026 00:00:00 GMT");
+        response.setHeader("Link",
+                "</api/v1/trades?status=...>; rel=\"successor-version\"");
+        return ResponseEntity.status(HttpStatus.GONE).build();
     }
 }
