@@ -1,7 +1,12 @@
 # TICKET-ADV093 / ADV094 — Prometheus alert rules
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 groups:
   - name: reconx-business
     rules:
+
       - alert: TooManyReconBreaks
         expr: recon_break_count > 50
         for: 5m
@@ -11,6 +16,7 @@ groups:
           summary: "Open recon breaks > 50 for 5 min"
           description: "Current breaks: {{ $value }}"
 
+
       - alert: HighApiLatencyP95
         expr: |
           histogram_quantile(0.95,
@@ -19,8 +25,11 @@ groups:
         for: 3m
         labels:
           severity: warning
+          team: backend
         annotations:
           summary: "P95 request latency > 500ms for 3 min on {{ $labels.uri }}"
+          description: "Current P95 latency: {{ $value }}s"
+
 
       - alert: KafkaDlqGrowing
         expr: increase(kafka_consumer_records_consumed_total{topic="trade-events-dlq"}[5m]) > 0
