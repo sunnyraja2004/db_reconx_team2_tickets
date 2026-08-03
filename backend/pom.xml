@@ -52,4 +52,23 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <!-- backend/pom.xml -->
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+            <configLocation>checkstyle.xml</configLocation>
+            <failOnViolation>true</failOnViolation>
+            <violationSeverity>warning</violationSeverity>
+            <consoleOutput>true</consoleOutput>
+        </configuration>
+        <executions>
+            <execution>
+                <phase>validate</phase>
+                <goals><goal>check</goal></goals>
+            </execution>
+        </executions>
+    </plugin>
 </project>
