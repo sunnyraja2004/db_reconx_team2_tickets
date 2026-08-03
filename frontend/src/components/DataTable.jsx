@@ -49,3 +49,5 @@ DataTable.Pagination = function Pagination({ page, totalPages, onChange }) {
     </nav>
   );
 };
+
+/* Ticket 104 - completed */
