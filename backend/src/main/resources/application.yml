@@ -11,6 +11,8 @@
 #          Liquibase runs, sample users are seeded.
 # =============================================================================
 spring:
+jmx:
+  enabled: true
   cache:
     cache-names: instruments,counterparties
     caffeine:
