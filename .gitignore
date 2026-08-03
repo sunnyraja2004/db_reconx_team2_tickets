@@ -1,5 +1,5 @@
 backend/target/
 **/target/
 target/
-
+node_modules/
 .idea/
