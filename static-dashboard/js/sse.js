@@ -11,16 +11,58 @@
     { tradeRef: 'EQU-20260603-0002', symbol: 'AAPL',    qty: 500,  price: 178.20, status: 'BREAK' },
   ];
 
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  const formatQty = new Intl.NumberFormat('en-US');
+
+  const formatPrice = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 4
+  });
+
   function prepend(trade) {
+
+    let statusModifier = '';
+
+    if (trade.status === 'MATCHED') {
+      statusModifier = 'trade-card--matched';
+    } else if (trade.status === 'UNMATCHED' || trade.status === 'BREAK') {
+      statusModifier = 'trade-card--break';
+    }
+
     const el = document.createElement('article');
-    el.className = 'trade-card trade-card--' + trade.status.toLowerCase();
+
+    el.className = 'trade-card ' + statusModifier + ' trade-card--new';
+
     el.innerHTML = `
-      <strong>${trade.tradeRef}</strong>
-      <span> ${trade.symbol} </span>
-      <span> qty=${trade.qty} </span>
-      <span> price=${trade.price} </span>
-      <span> [${trade.status}]</span>`;
+      <header class="trade-card__header">
+        <strong>${escapeHtml(trade.tradeRef)}</strong>
+        <span>${escapeHtml(trade.status)}</span>
+      </header>
+
+      <div class="trade-card__body">
+        <span>${escapeHtml(trade.symbol)}</span>
+        <span>qty=${formatQty.format(trade.qty)}</span>
+        <span>price=${formatPrice.format(trade.price)}</span>
+      </div>
+    `;
+
     feed.prepend(el);
+
+    setTimeout(() => {
+      el.classList.remove('trade-card--new');
+    }, 500);
+
+    while (feed.children.length > 50) {
+      feed.lastElementChild.remove();
+    }
   }
 
   demoEvents.forEach((e, i) => setTimeout(() => prepend(e), 500 * i));
