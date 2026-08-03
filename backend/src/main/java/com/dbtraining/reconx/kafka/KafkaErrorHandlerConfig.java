@@ -12,22 +12,27 @@ import org.springframework.util.backoff.ExponentialBackOff;
 @Configuration
 public class KafkaErrorHandlerConfig {
 
-    @Bean
-    public DefaultErrorHandler errorHandler(KafkaTemplate<Object, Object> template) {
+        @Bean
+        public DefaultErrorHandler errorHandler(KafkaTemplate<Object, Object> template) {
 
-        DeadLetterPublishingRecoverer recoverer =
-                new DeadLetterPublishingRecoverer(
-                        template,
-                        (ConsumerRecord<?, ?> rec, Exception ex) ->
-                                new TopicPartition(
-                                        rec.topic() + "-dlq",
-                                        rec.partition()
-                                )
-                );
+                DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
+                                template,
+                                (ConsumerRecord<?, ?> rec, Exception ex) -> new TopicPartition(
+                                                rec.topic() + "-dlq",
+                                                rec.partition()));
 
-        ExponentialBackOff backoff = new ExponentialBackOff(1000L, 2.0);
-        backoff.setMaxAttempts(3);
+                ExponentialBackOff backoff = new ExponentialBackOff(1000L, 2.0);
 
-        return new DefaultErrorHandler(recoverer, backoff);
-    }
+                backoff.setMaxInterval(10000L);
+
+                backoff.setMaxAttempts(3);
+
+                DefaultErrorHandler errorHandler = new DefaultErrorHandler(recoverer, backoff);
+
+                errorHandler.addNotRetryableExceptions(
+                                IllegalArgumentException.class,
+                                org.springframework.kafka.support.serializer.DeserializationException.class);
+
+                return errorHandler;
+        }
 }
