@@ -1,18 +1,14 @@
 package com.dbtraining.reconx.service;
 
+import com.dbtraining.reconx.dto.ReconResult;
+import com.dbtraining.reconx.model.*;
+import org.junit.jupiter.api.Test;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.Test;
-
-import com.dbtraining.reconx.dto.ReconResult;
-import com.dbtraining.reconx.model.EquityTrade;
-import com.dbtraining.reconx.model.ReconciliationRule;
-import com.dbtraining.reconx.model.Side;
-import com.dbtraining.reconx.model.TradeRef;
-import com.dbtraining.reconx.model.TradeType;
 
 /**
  * TICKET-ADV040 / ADV041 / ADV042 — TDD: write the test FIRST, then the impl.

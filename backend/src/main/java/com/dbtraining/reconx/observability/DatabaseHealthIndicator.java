@@ -1,13 +1,12 @@
 package com.dbtraining.reconx.observability;
 
-import java.sql.Connection;
-import java.sql.Statement;
-
-import javax.sql.DataSource;
-
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Component;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.Statement;
 
 /**
  * ============================================================================

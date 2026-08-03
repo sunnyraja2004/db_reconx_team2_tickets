@@ -1,13 +1,11 @@
 package com.dbtraining.reconx.observability;
 
-import org.springframework.stereotype.Component;
-
 import com.dbtraining.reconx.repository.ReconBreakRepository;
-
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.stereotype.Component;
 
 /**
  * ============================================================================

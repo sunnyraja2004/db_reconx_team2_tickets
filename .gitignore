@@ -3,3 +3,5 @@ backend/target/
 target/
 node_modules/
 .idea/
+student-guides/
+day*/

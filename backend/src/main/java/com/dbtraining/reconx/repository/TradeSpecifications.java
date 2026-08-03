@@ -1,10 +1,9 @@
 package com.dbtraining.reconx.repository;
 
-import java.time.LocalDate;
-
+import com.dbtraining.reconx.repository.entity.Trade;
 import org.springframework.data.jpa.domain.Specification;
 
-import com.dbtraining.reconx.repository.entity.Trade;
+import java.time.LocalDate;
 
 /**
  * ============================================================================
