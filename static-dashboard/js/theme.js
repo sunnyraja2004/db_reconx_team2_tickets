@@ -1,5 +1,6 @@
 // TICKET-ADV102 — theme toggle, persisted to localStorage; first paint reads
 // the persisted value to avoid a FOUC flash of the wrong theme.
+// Ticket 100 - Function for toggle
 (function () {
   const stored = localStorage.getItem('reconx-theme') || 'light';
   document.documentElement.dataset.theme = stored;
