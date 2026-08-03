@@ -49,18 +49,24 @@ jmx:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
       properties:
+        enable.idempotence: true
+        acks: all
         spring.json.add.type.headers: false
     consumer:
       group-id: reconx-service
       auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
       properties:
+        max.poll.records: 100
+
         spring.json.trusted.packages: com.dbtraining.reconx.dto
         spring.json.use.type.headers: false
         spring.json.value.default.type: com.dbtraining.reconx.dto.TradeEvent
-        metric.reporters: io.micrometer.core.instrument.binder.kafka.KafkaClientMetrics
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
 server:
   servlet:
     context-path: /api
