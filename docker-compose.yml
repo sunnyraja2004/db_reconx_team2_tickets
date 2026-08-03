@@ -3,16 +3,18 @@
 #                prometheus, grafana (+ optional kafdrop behind "debug" profile)
 # TICKET-ADV152 — Health checks gate dependent services
 # =============================================================================
+
 services:
 
   postgres:
     image: postgres:16-alpine
     container_name: reconx-postgres
     environment:
-      POSTGRES_DB:       reconx
-      POSTGRES_USER:     reconx_user
+      POSTGRES_DB: reconx
+      POSTGRES_USER: reconx_user
       POSTGRES_PASSWORD: reconx_pass
-    ports: ["5432:5432"]
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -20,21 +22,27 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
-    networks: [reconx]
+    networks:
+      - reconx
+
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.0
     container_name: reconx-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME:   2000
-    networks: [reconx]
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - reconx
+
 
   kafka:
     image: confluentinc/cp-kafka:7.6.0
     container_name: reconx-kafka
-    depends_on: [zookeeper]
-    ports: ["9092:9092"]
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -48,38 +56,49 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
-    networks: [reconx]
+    networks:
+      - reconx
+
 
   backend:
     build: ./backend
     container_name: reconx-backend
     depends_on:
-      postgres: {condition: service_healthy}
-      kafka:    {condition: service_healthy}
-    ports: ["8081:8081"]
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: uat
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
-      POSTGRES_DB:   reconx
+      POSTGRES_DB: reconx
       POSTGRES_USER: reconx_user
       POSTGRES_PASSWORD: reconx_pass
       KAFKA_BOOTSTRAP: kafka:29092
       JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me-32-bytes-min!!}
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8081/api/actuator/health"]
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/api/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 10
-    networks: [reconx]
+    networks:
+      - reconx
+
 
   frontend:
     build: ./frontend
     container_name: reconx-frontend
     depends_on:
-      backend: {condition: service_healthy}
-    ports: ["5173:80"]
-    networks: [reconx]
+      backend:
+        condition: service_healthy
+    ports:
+      - "5173:80"
+    networks:
+      - reconx
+
 
   prometheus:
     image: prom/prometheus:v2.54.1
@@ -87,37 +106,51 @@ services:
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - ./monitoring/prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
-    ports: ["9090:9090"]
-    networks: [reconx]
+    ports:
+      - "9090:9090"
+    networks:
+      - reconx
+
 
   grafana:
     image: grafana/grafana:11.2.0
     container_name: reconx-grafana
-    depends_on: [prometheus]
+    depends_on:
+      - prometheus
     environment:
-      GF_SECURITY_ADMIN_USER:     admin
+      GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
-      GF_USERS_ALLOW_SIGN_UP:     "false"
+      GF_USERS_ALLOW_SIGN_UP: "false"
     volumes:
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
       - grafana_data:/var/lib/grafana
-    ports: ["3000:3000"]
-    networks: [reconx]
+    ports:
+      - "3000:3000"
+    networks:
+      - reconx
 
-  # Optional — bring up with `--profile debug`
+
+  # Optional — start using:
+  # docker compose --profile debug up
   kafdrop:
     image: obsidiandynamics/kafdrop:4.0.1
     container_name: reconx-kafdrop
-    profiles: ["debug"]
-    depends_on: [kafka]
+    profiles:
+      - debug
+    depends_on:
+      - kafka
     environment:
       KAFKA_BROKERCONNECT: kafka:29092
       JVM_OPTS: "-Xms32M -Xmx64M"
-    ports: ["9000:9000"]
-    networks: [reconx]
+    ports:
+      - "9000:9000"
+    networks:
+      - reconx
+
 
 networks:
   reconx:
+
 
 volumes:
   postgres_data:
