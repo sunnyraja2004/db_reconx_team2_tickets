@@ -1,5 +1,5 @@
 # =============================================================================
-# TICKET-ADV049 — uat profile: PostgreSQL on docker-compose
+# TICKET-ADV151 — uat profile: PostgreSQL on docker-compose
 # =============================================================================
 spring:
   datasource:
@@ -10,10 +10,17 @@ spring:
     hikari:
       maximum-pool-size: 20
       connection-timeout: 5000
+
   jpa:
+    hibernate:
+      ddl-auto: validate
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
       hibernate.jdbc.batch_size: 50
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
 
 logging:
   level:
