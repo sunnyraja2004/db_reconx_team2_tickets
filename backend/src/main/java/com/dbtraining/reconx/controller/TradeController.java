@@ -18,6 +18,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -96,14 +99,7 @@ public class TradeController {
     }
 
     @PatchMapping("/{id}/status")
-    @Operation(summary = "Update only the status field")
-    public TradeResponse updateStatus(@PathVariable Long id,
-            @RequestBody Map<String, String> body,
-            @AuthenticationPrincipal Object principal) {
-        String actor = String.valueOf(principal);
-        String status = body.get("status");
-        return mapper.toResponse(service.updateStatus(id, status, actor));
-    }
+    
 
     @Operation(summary = "Update only the status field")
     public TradeResponse updateStatus(@PathVariable Long id,

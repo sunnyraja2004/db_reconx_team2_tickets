@@ -1,8 +1,6 @@
-# TICKET-ADV093 / ADV094 — Prometheus alert rules
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
+#TICKET-ADV093 / ADV094 — Prometheus alert rules
+
 groups:
   - name: reconx-business
     rules:
