@@ -1,10 +1,11 @@
 package com.dbtraining.reconx.service;
 
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
 import com.dbtraining.reconx.exception.InvalidTradeException;
 import com.dbtraining.reconx.repository.InstrumentRepository;
 import com.dbtraining.reconx.repository.entity.Instrument;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 
 /**
  * TICKET-ADV081 — @Cacheable on findBySymbol (cache name "instruments").

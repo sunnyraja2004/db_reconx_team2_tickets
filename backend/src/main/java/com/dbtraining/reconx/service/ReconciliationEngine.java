@@ -1,15 +1,5 @@
 package com.dbtraining.reconx.service;
 
-import com.dbtraining.reconx.dto.ReconResult;
-import com.dbtraining.reconx.model.BondTrade;
-import com.dbtraining.reconx.model.DerivativeTrade;
-import com.dbtraining.reconx.model.EquityTrade;
-import com.dbtraining.reconx.model.FXTrade;
-import com.dbtraining.reconx.model.ReconciliationRule;
-import com.dbtraining.reconx.model.TradeType;
-import io.micrometer.core.annotation.Timed;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +7,18 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.dbtraining.reconx.dto.ReconResult;
+import com.dbtraining.reconx.model.BondTrade;
+import com.dbtraining.reconx.model.DerivativeTrade;
+import com.dbtraining.reconx.model.EquityTrade;
+import com.dbtraining.reconx.model.FXTrade;
+import com.dbtraining.reconx.model.ReconciliationRule;
+import com.dbtraining.reconx.model.TradeType;
+
+import io.micrometer.core.annotation.Timed;
 
 /**
  * ============================================================================
@@ -40,7 +42,7 @@ import java.util.stream.Collectors;
 public class ReconciliationEngine {
 
     @Timed(value = "reconciliation.duration", description = "Wall time of reconcile()",
-            percentiles = {0.5, 0.95, 0.99}, histogram = true)
+           percentiles = {0.5, 0.95, 0.99}, histogram = true)
     public List<ReconResult> reconcile(List<TradeType> internal,
                                        List<TradeType> external,
                                        ReconciliationRule rule) {
