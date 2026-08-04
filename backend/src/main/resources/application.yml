@@ -11,12 +11,6 @@
 #          Liquibase runs, sample users are seeded.
 # =============================================================================
 spring:
-jmx:
-  enabled: true
-  cache:
-    cache-names: instruments,counterparties
-    caffeine:
-      spec: maximumSize=500,expireAfterWrite=5m
   application:
     name: reconx
   profiles:
@@ -65,9 +59,8 @@ jmx:
         spring.json.use.type.headers: false
         spring.json.value.default.type: com.dbtraining.reconx.dto.TradeEvent
 
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
 server:
+  port: 8081
   servlet:
     context-path: /api
 
@@ -82,27 +75,22 @@ management:
       exposure:
         include: health,info,metrics,prometheus,env,loggers
       base-path: /actuator
-
   endpoint:
     health:
       show-details: when_authorized
       probes:
         enabled: true
-
   metrics:
-    binders:
-      kafka:
-        enabled: true
-
     distribution:
       percentiles-histogram:
         http.server.requests: true
         reconciliation.duration: true
       percentiles:
         http.server.requests: 0.5, 0.95, 0.99
-
     tags:
-      application: ${spring.application.name}# =============================================================================
+      application: ${spring.application.name}
+
+# =============================================================================
 # TICKET-ADV072 — JWT signing config (NEVER commit a real secret; override per env)
 # =============================================================================
 reconx:

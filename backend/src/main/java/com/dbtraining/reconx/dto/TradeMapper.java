@@ -1,8 +1,9 @@
 package com.dbtraining.reconx.dto;
 
-import com.dbtraining.reconx.repository.entity.Trade;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import com.dbtraining.reconx.repository.entity.Trade;
 
 /**
  * ============================================================================
@@ -15,6 +16,7 @@ import org.mapstruct.Mapping;
  *          field is added to one side and forgotten on the other.
  * ============================================================================
  */
+
 @Mapper(componentModel = "spring")
 public interface TradeMapper {
 

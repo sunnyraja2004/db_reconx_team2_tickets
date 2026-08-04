@@ -1,120 +1,72 @@
-// TICKET-ADV115 — useWebSocket(url) with auto-reconnect (exp backoff).
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+// useWebSocket(url) with auto-reconnect (exponential backoff up to `maxRetries`).
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-const DEFAULTS = {
-  reconnect: true,
-  maxRetries: 5,
-  baseDelay: 500,
-  maxDelay: 30000
-};
-
-export function useWebSocket(url, options = {}) {
-  const {
-    reconnect,
-    maxRetries,
-    baseDelay,
-    maxDelay
-  } = {
-    ...DEFAULTS,
-    ...options
-  };
-
+export function useWebSocket(url, { reconnect = true, maxRetries = 5 } = {}) {
   const [data, setData] = useState(null);
-  const [status, setStatus] = useState("connecting");
-
+  const [status, setStatus] = useState('connecting');
   const wsRef = useRef(null);
   const retriesRef = useRef(0);
   const timerRef = useRef(null);
-  const shouldStopRef = useRef(false);
-
-  const connect = useCallback(() => {
-    if (shouldStopRef.current) {
-      return;
-    }
-
-    setStatus("connecting");
-
-    const ws = new WebSocket(url);
-    wsRef.current = ws;
-
-    ws.onopen = () => {
-      retriesRef.current = 0;
-      setStatus("open");
-    };
-
-    ws.onmessage = (event) => {
-      try {
-        setData(JSON.parse(event.data));
-      } catch {
-        setData(event.data);
-      }
-    };
-
-    ws.onerror = () => {
-      setStatus("error");
-    };
-
-    ws.onclose = () => {
-      setStatus("closed");
-
-      if (
-        shouldStopRef.current ||
-        !reconnect ||
-        retriesRef.current >= maxRetries
-      ) {
-        return;
-      }
-
-      const delay = Math.min(
-        maxDelay,
-        baseDelay * (2 ** retriesRef.current)
-      );
-
-      retriesRef.current += 1;
-
-      timerRef.current = setTimeout(connect, delay);
-    };
-  }, [url, reconnect, maxRetries, baseDelay, maxDelay]);
+  const cancelledRef = useRef(false);
 
   useEffect(() => {
-    shouldStopRef.current = false;
+    cancelledRef.current = false;
+    retriesRef.current = 0;
+
+    function connect() {
+      if (cancelledRef.current) return;
+      const ws = new WebSocket(url);
+      wsRef.current = ws;
+      setStatus('connecting');
+
+      ws.onopen = () => {
+        if (cancelledRef.current) return;
+        setStatus('open');
+        retriesRef.current = 0;
+      };
+      ws.onmessage = (event) => {
+        if (cancelledRef.current) return;
+        try {
+          setData(JSON.parse(event.data));
+        } catch {
+          setData(event.data);
+        }
+      };
+      ws.onerror = () => {
+        if (cancelledRef.current) return;
+        setStatus('error');
+      };
+      ws.onclose = () => {
+        if (cancelledRef.current) return;
+        setStatus('closed');
+        if (reconnect && retriesRef.current < maxRetries) {
+          const attempt = retriesRef.current++;
+          const delay = Math.min(30000, 500 * 2 ** attempt);
+          timerRef.current = setTimeout(connect, delay);
+        }
+      };
+    }
 
     connect();
 
     return () => {
-      shouldStopRef.current = true;
-
+      cancelledRef.current = true;
       if (timerRef.current) {
         clearTimeout(timerRef.current);
+        timerRef.current = null;
       }
-
-      if (wsRef.current) {
-        wsRef.current.close();
+      const ws = wsRef.current;
+      if (ws && ws.readyState <= WebSocket.OPEN) {
+        ws.close();
       }
     };
-  }, [connect]);
+  }, [url, reconnect, maxRetries]);
 
   const send = useCallback((payload) => {
-    if (
-      wsRef.current &&
-      wsRef.current.readyState === WebSocket.OPEN
-    ) {
-      wsRef.current.send(
-        typeof payload === "string"
-          ? payload
-          : JSON.stringify(payload)
-      );
-    }
+    const ws = wsRef.current;
+    if (!ws || ws.readyState !== WebSocket.OPEN) return;
+    ws.send(typeof payload === 'string' ? payload : JSON.stringify(payload));
   }, []);
 
-  return {
-    data,
-    status,
-    send
-  };
+  return { data, status, send };
 }

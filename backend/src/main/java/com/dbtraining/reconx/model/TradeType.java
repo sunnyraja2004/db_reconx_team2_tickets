@@ -55,5 +55,3 @@ public sealed interface TradeType
 
     enum AssetClass { EQUITY, FX, BOND, DERIVATIVE }
 }
-
-//ticket 18 completed
